@@ -64,23 +64,7 @@ class AccountSummaryList:
         :type json_as_dict: dict
         """
         self.data = json_as_dict
-        self._items_iterator = AccountSummaryList.AccountSummaryIterator(iter(self.data.get("items", [])))
-
-    class AccountSummaryIterator:
-        """
-        Iterate over the each AccountSummary from the API response.
-
-        This iterator allows to iterate over wrapped representation of AccountSummaries contained
-        in the API response.
-        """
-        def __init__(self, items_iterator):
-            self._items_iterator = items_iterator
-
-        def __iter__(self):
-            return self
-
-        def __next__(self):
-            return AccountSummary(next(self._items_iterator))
+        self._items_iterator = GenericWrappingIterator(self.data.get("items", []), AccountSummary)
 
     @property
     def kind(self):
@@ -127,23 +111,7 @@ class AccountSummary:
     """
     def __init__(self, json_as_dict):
         self.data = json_as_dict
-        self._web_properties_iterator = AccountSummary.WebPropertyIterator(iter(self.data.get("webProperties", [])))
-
-    class WebPropertyIterator:
-        """
-        Iterate over the each webProperties from the API response.
-
-        This iterator allows to iterate over wrapped representation of webProperties contained
-        in the API response.
-        """
-        def __init__(self, items_iterator):
-            self._items_iterator = items_iterator
-
-        def __iter__(self):
-            return self
-
-        def __next__(self):
-            return WebProperty(next(self._items_iterator))
+        self._items_iterator = GenericWrappingIterator(self.data.get("webProperties", []), WebProperty)
 
     @property
     def id(self):
@@ -159,7 +127,7 @@ class AccountSummary:
 
     @property
     def web_properties(self):
-        yield WebProperty(next(self._web_properties_iterator))
+        return self._items_iterator
 
 
 class WebProperty:
@@ -173,23 +141,7 @@ class WebProperty:
         """
     def __init__(self, json_as_dict):
         self.data = json_as_dict
-        self._profile_iterator = WebProperty.ProfileIterator(iter(self.data.get("profiles", [])))
-
-    class ProfileIterator:
-        """
-        Iterate over the each Profiles from the API response.
-
-        This iterator allows to iterate over wrapped representation of Profiles contained
-        in the API response.
-        """
-        def __init__(self, profiles_iterator):
-            self._profiles_iterator = profiles_iterator
-
-        def __iter__(self):
-            return self
-
-        def __next__(self):
-            return Profile(next(self._profiles_iterator))
+        self._profile_iterator = GenericWrappingIterator(self.data.get("profiles", []), Profile)
 
     @property
     def kind(self):
@@ -247,3 +199,28 @@ class Profile:
     @property
     def type(self):
         return self.data.get("type")
+
+
+class GenericWrappingIterator:
+    """
+    Iterate over wrapped dict items from a list in an API response.
+
+    This iterator allows to iterate over wrapped representation of entities contained
+    in the API response.
+    """
+    def __init__(self, items, wrapper_class):
+        self._wrapper_class = wrapper_class
+        self._items = items
+        self._items_iterator = iter(items)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        return self._wrapper_class(next(self._items_iterator))
+
+    def __getitem__(self, key):
+        return self._wrapper_class(self._items[key])
+
+    def __len__(self):
+        return len(self._items)
