@@ -17,13 +17,16 @@
 
 import argparse
 import httplib2
+import googleapiclient
+from typing import List
 from oauth2client import client
 from oauth2client import file
 from oauth2client import tools
 from googleapiclient.discovery import build
 
 
-def get_service(api_name, api_version, scope, client_secrets_path):
+def get_service(api_name: str, api_version: str, scope: List[str], client_secrets_path: str)\
+        -> googleapiclient.discovery.Resource:
     """Get a service that communicates to a Google API.
 
     Args:
@@ -60,4 +63,4 @@ def get_service(api_name, api_version, scope, client_secrets_path):
     # Build the service object.
     service = build(api_name, api_version, http=http)
 
-    return service  # type: googleapiclient.discovery.Resource
+    return service
