@@ -2,7 +2,7 @@ etc/
 .idea/
 *.dat
 client_secret*.json
-src/test.py
+src/test.*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

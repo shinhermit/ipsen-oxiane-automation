@@ -15,3 +15,12 @@ googleapi = {
                    'https://www.googleapis.com/auth/webmasters.readonly']
     }
 }
+
+monitisapi = {
+    "action": {
+        "base_url": "http://api.monitis.com/api",
+    },
+    "custom_action": {
+        "base_url": "http://api.monitis.com/customMonitorApi"
+    }
+}
