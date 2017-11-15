@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from src import settings
 
@@ -19,7 +20,7 @@ def get_auth_token_request_data(
     call to the Monitis API
     """
     return {
-        "action": settings.monitisapi["action"]["get_auth_token"],
+        "action": settings.monitisapi["actions"]["get_auth_token"],
         "apikey": api_key,
         "secretkey": secret_key
     }
@@ -27,15 +28,16 @@ def get_auth_token_request_data(
 
 def get_add_monitor_request_data(auth_token: str,
                                  monitor_name: str,
-                                 url: str,
+                                 resource_url: str,
                                  monitor_type: str = settings.monitisapi["monitor"]["monitor_type"],
                                  monitor_params: str = settings.monitisapi["monitor"]["monitor_params"],
                                  result_params: str = settings.monitisapi["monitor"]["result_params"],
-                                 action: str = settings.monitisapi["action"]["add_rum"],
-                                 from_dashboard: bool = True, record_api_call: bool = False,
+                                 action: str = settings.monitisapi["actions"]["add_rum"],
+                                 from_dashboard: bool = True,
+                                 record_api_call: bool = False,
                                  version: str = settings.monitisapi["version"],
                                  auth_method: str = settings.monitisapi["credentials"]["auth_method"],
-                                 tag: str = settings.monitisapi["default_tag"]) -> dict:
+                                 tag: str = settings.monitisapi["monitor"]["default_tag"]) -> dict:
     """
     Provides a dictionary that can be used to create a monitor in Monitis.
 
@@ -45,8 +47,8 @@ def get_add_monitor_request_data(auth_token: str,
     :param auth_token: auth token for authentication.
     :param action: the action to take. For example, addMonitor to add a monitor.
     :param monitor_name: the name to assign to the monitor
-    :param monitor_type: the type of monitor, for example, RUM
-    :param url: the resource to monitor
+    :param monitor_type: the type of monitor, for example RUM
+    :param resource_url: the resource to monitor
     :param monitor_params: Parameters of the monitor in the following format:
     name1:displayName1:value1:dataType1:isHidden1[;name2:displayName2:value2:dataType2:isHidden2...].
     :param result_params: Result parameters in the following format:
@@ -57,19 +59,21 @@ def get_add_monitor_request_data(auth_token: str,
     :param version: the version of API to invoke
     :param tag: the group name or list of the groups the monitor will belong to: E.g. ["dev", "ops"]
     """
+    monitor_param_domain = "domain:Domain:{domain}:1:false:false".format(domain=resource_url)
     return{
-        "apiKey": settings.monitisapi["credentials"]["api_key"],
+        "apikey": settings.monitisapi["credentials"]["api_key"],
         "validation": auth_method,
         "authToken": auth_token,
         "action": action,
         "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "name": monitor_name,
         "type": monitor_type,
-        "url": url,
-        "monitorParams": monitor_params,
+        "url": resource_url,
+        "monitorParams": monitor_params + ";" + monitor_param_domain,
         "resultParams": result_params,
         "tag": tag,
         "version": version,
+        "output": "json",
         "recordApiCall": record_api_call,
         "fromDashboard": from_dashboard
     }
