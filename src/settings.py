@@ -1,4 +1,3 @@
-import json
 
 
 googleapi = {
@@ -22,7 +21,6 @@ googleapi = {
 
 monitisapi = {
     "api_url": "http://dashboard.monitis.com/customMonitorApi",
-    # "api_url": "http://api.monitis.com/api",
     "version": "2",
     "actions": {
         "add_rum": "addCompositeMonitor",
