@@ -19,7 +19,7 @@ class AccountSummaryList:
     API reference page:
     https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/management/accountSummaries/list
 
-    The JSON reponse has the foolowing structure:
+    The JSON response has the following structure:
 
     {
       "kind": "analytics#accountSummaries",
@@ -110,7 +110,11 @@ class AccountSummaryList:
 
     @property
     def items(self) -> GenericWrappingIterator:
-        """A list of AccountSummaries."""
+        """
+        Iterator to iterate over AccountSummary items of this AccountSummaryList.
+
+        :rtype: GenericWrappingIterator of AccountSummary
+        """
         return self._items_iterator
 
 
@@ -133,18 +137,26 @@ class AccountSummary:
 
     @property
     def id(self) -> str:
+        """Account ID."""
         return self.data.get("id")
 
     @property
     def kind(self) -> str:
+        """Resource type for Analytics AccountSummary."""
         return self.data.get("kind")
 
     @property
     def name(self) -> str:
+        """Account name."""
         return self.data.get("name")
 
     @property
     def web_properties(self) -> GenericWrappingIterator:
+        """
+        Iterator to iterate over WebProperty items of this AccountSummary.
+
+        :rtype: GenericWrappingIterator of WebProperty
+        """
         return self._items_iterator
 
 
@@ -166,30 +178,41 @@ class WebProperty:
 
     @property
     def kind(self) -> str:
+        """Resource type for Analytics WebProperty."""
         return self.data.get("kind")
 
     @property
     def id(self) -> str:
+        """Web property ID of the form UA-XXXXX-YY."""
         return self.data.get("id")
 
     @property
     def name(self) -> str:
+        """Name of this web property."""
         return self.data.get("name")
 
     @property
     def internal_web_property_id(self) -> str:
+        """Internal ID for this web property."""
         return self.data.get("internalWebPropertyId")
 
     @property
     def level(self) -> str:
+        """Level for this web property."""
         return self.data.get("level")
 
     @property
     def website_url(self) -> str:
+        """Website url for this web property."""
         return self.data.get("websiteUrl")
 
     @property
     def profiles(self) -> GenericWrappingIterator:
+        """
+        Iterator to iterate over Profile items of this WebProperty.
+
+        :rtype: GenericWrappingIterator of Profile
+        """
         return self._profile_iterator
 
 
@@ -210,18 +233,22 @@ class Profile:
 
     @property
     def kind(self) -> str:
+        """Resource type for Analytics view (profile)."""
         return self.data.get("kind")
 
     @property
     def id(self) -> str:
+        """View (Profile) ID."""
         return self.data.get("id")
 
     @property
     def name(self) -> str:
+        """Name of this view (profile)."""
         return self.data.get("name")
 
     @property
     def type(self) -> str:
+        """View (Profile) type. Supported types: WEB or APP."""
         return self.data.get("type")
 
 
