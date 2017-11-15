@@ -6,6 +6,7 @@ allow a better understanding of the data used in the scripts.
 
 API reference page: https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/
 """
+from typing import Union, Type
 
 
 class AccountSummaryList:
@@ -61,41 +62,55 @@ class AccountSummaryList:
     def __init__(self, json_as_dict: dict):
         """
         :param json_as_dict: a dictionary that represent the JSON response from the Google API
-        :type json_as_dict: dict
         """
         self.data = json_as_dict
         self._items_iterator = GenericWrappingIterator(self.data.get("items", []), AccountSummary)
 
     @property
-    def kind(self):
+    def kind(self) -> str:
+        """Collection type."""
         return self.data.get("kind")
 
     @property
-    def username(self):
+    def username(self) -> str:
+        """Email ID of the authenticated user"""
         return self.data.get("username")
 
     @property
-    def total_results(self):
+    def total_results(self) -> int:
+        """The total number of results for the query, regardless of the number of results in the response."""
         return self.data.get("totalResults")
 
     @property
-    def start_index(self):
+    def start_index(self) -> int:
+        """
+        The starting index of the resources, which is 1 by default or otherwise
+        specified by the start-index query parameter.
+        """
         return self.data.get("startIndex")
 
     @property
-    def items_per_page(self):
+    def items_per_page(self) -> int:
+        """
+        The maximum number of resources the response can contain, regardless of the
+        actual number of resources returned. Its value ranges from 1 to 1000 with
+        a value of 1000 by default, or otherwise specified by the max-results query parameter.
+        """
         return self.data.get("itemsPerPage")
 
     @property
-    def previous_link(self):
+    def previous_link(self) -> str:
+        """Link to previous page for this AccountSummary collection."""
         return self.data.get("previousLink")
 
     @property
-    def next_link(self):
+    def next_link(self) -> str:
+        """Link to next page for this AccountSummary collection."""
         return self.data.get("nextLink")
 
     @property
-    def items(self):
+    def items(self) -> GenericWrappingIterator:
+        """A list of AccountSummaries."""
         return self._items_iterator
 
 
@@ -110,23 +125,26 @@ class AccountSummary:
     https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/management/accountSummaries
     """
     def __init__(self, json_as_dict):
+        """
+        :param json_as_dict: a dictionary that represent the JSON response from the Google API
+        """
         self.data = json_as_dict
         self._items_iterator = GenericWrappingIterator(self.data.get("webProperties", []), WebProperty)
 
     @property
-    def id(self):
+    def id(self) -> str:
         return self.data.get("id")
 
     @property
-    def kind(self):
+    def kind(self) -> str:
         return self.data.get("kind")
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.data.get("name")
 
     @property
-    def web_properties(self):
+    def web_properties(self) -> GenericWrappingIterator:
         return self._items_iterator
 
 
@@ -140,35 +158,38 @@ class WebProperty:
         https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/management/accountSummaries
         """
     def __init__(self, json_as_dict):
+        """
+        :param json_as_dict: a dictionary that represent the JSON response from the Google API
+        """
         self.data = json_as_dict
         self._profile_iterator = GenericWrappingIterator(self.data.get("profiles", []), Profile)
 
     @property
-    def kind(self):
+    def kind(self) -> str:
         return self.data.get("kind")
 
     @property
-    def id(self):
+    def id(self) -> str:
         return self.data.get("id")
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.data.get("name")
 
     @property
-    def internal_web_property_id(self):
+    def internal_web_property_id(self) -> str:
         return self.data.get("internalWebPropertyId")
 
     @property
-    def level(self):
+    def level(self) -> str:
         return self.data.get("level")
 
     @property
-    def website_url(self):
+    def website_url(self) -> str:
         return self.data.get("websiteUrl")
 
     @property
-    def profiles(self):
+    def profiles(self) -> GenericWrappingIterator:
         return self._profile_iterator
 
 
@@ -182,22 +203,25 @@ class Profile:
         https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/management/accountSummaries
     """
     def __init__(self, json_as_dict):
+        """
+        :param json_as_dict: a dictionary that represent the JSON response from the Google API
+        """
         self.data = json_as_dict
 
     @property
-    def kind(self):
+    def kind(self) -> str:
         return self.data.get("kind")
 
     @property
-    def id(self):
+    def id(self) -> str:
         return self.data.get("id")
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.data.get("name")
 
     @property
-    def type(self):
+    def type(self) -> str:
         return self.data.get("type")
 
 
@@ -208,7 +232,14 @@ class GenericWrappingIterator:
     This iterator allows to iterate over wrapped representation of entities contained
     in the API response.
     """
-    def __init__(self, items, wrapper_class):
+    def __init__(self,
+                 items: list,
+                 wrapper_class: Union[Type[AccountSummary], Type[WebProperty], Type[Profile]]):
+        """
+        :param items: the (dict) items over which we want to iterate
+        :param wrapper_class: each item returned while iterating using this iterator will
+        be wrapped using the class provided by wrapper_class
+        """
         self._wrapper_class = wrapper_class
         self._items = items
         self._items_iterator = iter(items)
