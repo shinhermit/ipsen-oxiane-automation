@@ -253,6 +253,7 @@ class Profile:
 
 
 T = Union[AccountSummary, WebProperty, Profile]
+"""Used to type hint the GenericWrappingIterator class' methods"""
 
 
 class GenericWrappingIterator:
