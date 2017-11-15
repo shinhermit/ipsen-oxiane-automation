@@ -9,6 +9,15 @@ def get_auth_token_request_data(
     """
     Obtain an auth token.
 
+    Usage example:
+    ``
+    auth_token = api_connector.get_token()
+    api_connector.add_monitor(
+        auth_token=auth_token,
+        monitor_name="ipsen-oxiane.blogspot.fr_RUM",
+        resource_url="ipsen-oxiane.blogspot.fr")
+    ``
+
     API reference: http://www.monitis.com/api/customApiActions.html#getAuthToken
 
     :param api_key: API access key. Can be obtain via the Monitis account
@@ -28,7 +37,7 @@ def get_auth_token_request_data(
 def get_add_monitor_request_data(auth_token: str,
                                  monitor_name: str,
                                  resource_url: str,
-                                 monitor_type: str = settings.monitisapi["monitor"]["monitor_type"],
+                                 monitor_type: str = settings.monitisapi["monitor"]["monitor_default_type"],
                                  monitor_params: str = settings.monitisapi["monitor"]["monitor_params"],
                                  result_params: str = settings.monitisapi["monitor"]["result_params"],
                                  action: str = settings.monitisapi["actions"]["add_rum"],
@@ -39,6 +48,15 @@ def get_add_monitor_request_data(auth_token: str,
                                  tag: str = settings.monitisapi["monitor"]["default_tag"]) -> dict:
     """
     Provides a dictionary that can be used to create a monitor in Monitis.
+
+    Usage example:
+    ``
+    auth_token = api_connector.get_token()
+    api_connector.add_monitor(
+        auth_token=auth_token,
+        monitor_name="ipsen-oxiane.blogspot.fr_RUM",
+        resource_url="ipsen-oxiane.blogspot.fr")
+    ``
 
     API reference: http://www.monitis.com/api/api.html
 

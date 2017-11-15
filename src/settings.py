@@ -33,8 +33,7 @@ monitisapi = {
         "auth_method": "token"
     },
     "monitor": {
-        "monitor_type": "RUM",
-        "monitor_test_type": "http",
+        "monitor_default_type": "RUM",
         "default_tag": '["test"]',
         "monitor_params": ("ignoreQueryParams:IgnoreQueryParams:true:1:"
                            "false:false;aggType:AggType:median:1:false:false;"),
