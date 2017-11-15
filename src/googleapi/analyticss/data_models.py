@@ -109,7 +109,7 @@ class AccountSummaryList:
         return self.data.get("nextLink")
 
     @property
-    def items(self) -> GenericWrappingIterator:
+    def items(self):
         """
         Iterator to iterate over AccountSummary items of this AccountSummaryList.
 
@@ -151,7 +151,7 @@ class AccountSummary:
         return self.data.get("name")
 
     @property
-    def web_properties(self) -> GenericWrappingIterator:
+    def web_properties(self):
         """
         Iterator to iterate over WebProperty items of this AccountSummary.
 
@@ -207,7 +207,7 @@ class WebProperty:
         return self.data.get("websiteUrl")
 
     @property
-    def profiles(self) -> GenericWrappingIterator:
+    def profiles(self):
         """
         Iterator to iterate over Profile items of this WebProperty.
 
@@ -259,13 +259,12 @@ class GenericWrappingIterator:
     This iterator allows to iterate over wrapped representation of entities contained
     in the API response.
     """
-    def __init__(self,
-                 items: list,
-                 wrapper_class: Union[Type[AccountSummary], Type[WebProperty], Type[Profile]]):
+    def __init__(self, items: list, wrapper_class):
         """
         :param items: the (dict) items over which we want to iterate
         :param wrapper_class: each item returned while iterating using this iterator will
         be wrapped using the class provided by wrapper_class
+        :type wrapper_class: : AccountSummary or WebProperty or Type[Profile]
         """
         self._wrapper_class = wrapper_class
         self._items = items
