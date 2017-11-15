@@ -1,6 +1,7 @@
 googleapi = {
     "credentials": {
-        "client_secret_path": "etc/credentials/client_secret.json"
+        "client_secret_path": "./etc/credentials/client_secret.json",
+        "credentials_base_path": "./etc/credentials/"
     },
     "analytics": {
         "api_name": "analytics",
