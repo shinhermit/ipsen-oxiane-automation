@@ -6,6 +6,7 @@ allow a better understanding of the data used in the scripts.
 
 API reference page: https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/
 """
+from typing import Generic, TypeVar, Type, Union
 
 
 class AccountSummaryList:
@@ -108,7 +109,7 @@ class AccountSummaryList:
         return self.data.get("nextLink")
 
     @property
-    def items(self):
+    def items(self) -> 'GenericWrappingIterator':
         """
         Iterator to iterate over AccountSummary items of this AccountSummaryList.
 
@@ -150,7 +151,7 @@ class AccountSummary:
         return self.data.get("name")
 
     @property
-    def web_properties(self):
+    def web_properties(self) -> 'GenericWrappingIterator':
         """
         Iterator to iterate over WebProperty items of this AccountSummary.
 
@@ -206,7 +207,7 @@ class WebProperty:
         return self.data.get("websiteUrl")
 
     @property
-    def profiles(self):
+    def profiles(self) -> 'GenericWrappingIterator':
         """
         Iterator to iterate over Profile items of this WebProperty.
 
@@ -251,6 +252,9 @@ class Profile:
         return self.data.get("type")
 
 
+T = Union[AccountSummary, WebProperty, Profile]
+
+
 class GenericWrappingIterator:
     """
     Iterate over wrapped dict items from a list in an API response.
@@ -258,25 +262,28 @@ class GenericWrappingIterator:
     This iterator allows to iterate over wrapped representation of entities contained
     in the API response.
     """
-    def __init__(self, items: list, wrapper_class):
+    def __init__(self, items: list, wrapper_class: Type[T]):
         """
         :param items: the (dict) items over which we want to iterate
         :param wrapper_class: each item returned while iterating using this iterator will
         be wrapped using the class provided by wrapper_class
-        :type wrapper_class: : AccountSummary or WebProperty or Profile
         """
         self._wrapper_class = wrapper_class
         self._items = items
         self._items_iterator = iter(items)
 
-    def __iter__(self):
+    def __iter__(self) -> 'GenericWrappingIterator':
+        """Used in for..in loops to get the iterator."""
         return self
 
-    def __next__(self):
+    def __next__(self) -> T:
+        """Used in for..in loops to get the next item."""
         return self._wrapper_class(next(self._items_iterator))
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: int) -> T:
+        """[] operator"""
         return self._wrapper_class(self._items[key])
 
-    def __len__(self):
+    def __len__(self) -> int:
+        """Used by the builtin len() function."""
         return len(self._items)
