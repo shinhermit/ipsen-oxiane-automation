@@ -15,12 +15,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 import httplib2
-import googleapiclient
+import googleapiclient.discovery
 from typing import List
 from oauth2client import client
 from oauth2client import file
 from oauth2client import tools
-from googleapiclient.discovery import build
 
 from src import settings
 
@@ -64,4 +63,4 @@ def get_service(api_name: str, api_version: str, scope: List[str], client_secret
     """
     flow = create_oauth_flow(client_secrets_path, scope)
     http = get_authorized_http_object(api_name, flow)
-    return build(api_name, api_version, http=http)
+    return googleapiclient.discovery.build(api_name, api_version, http=http)
