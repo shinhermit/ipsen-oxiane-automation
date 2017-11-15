@@ -19,9 +19,25 @@ googleapi = {
 
 monitisapi = {
     "action": {
-        "base_url": "http://api.monitis.com/api",
+        "add_rum": "addCompositeMonitor",
+        "get_auth_token": "authToken"
     },
+    "default_tag": '["Default"]',
+    "version": "2",
     "custom_action": {
         "base_url": "http://api.monitis.com/customMonitorApi"
+    },
+    "credentials": {
+        # apy key from the monitis account, in the Tools > API menu.
+        "api_key": "24DRL1UFK3FU4LECK8C3JCGLFA",
+        "secret_key": "5N5BMKERKKK1S7FER2GLEBF7M4",
+        "auth_method": "token"
+    },
+    "monitor": {
+        "monitor_params": ("ignoreQueryParams:IgnoreQueryParams:true:1:"
+                           "false:false;domain:Domain:ipsen-oxiane.blogspot.fr:1:"
+                           "false:false;aggType:AggType:median:1:false:false;"),
+        "result_params": "position:Position:N/A:2;difference:Difference:N/A:3;",
+        "monitor_type": "RUM"
     }
 }
