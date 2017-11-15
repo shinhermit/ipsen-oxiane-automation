@@ -38,7 +38,7 @@ def get_authorized_http_object(api_name: str, flow: client.Flow) -> httplib2.Htt
     """
     Create an OAuth authorized http object.
 
-    :param api_name: name of the api. Will be used as the name of the credentials file
+    :param api_name: name of the api. It will be used as the name of the credentials file
     :param flow: the OAuth flow object to use to create credentials
     :return: authorize http object
     """
