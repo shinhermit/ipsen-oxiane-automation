@@ -6,7 +6,6 @@ allow a better understanding of the data used in the scripts.
 
 API reference page: https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/
 """
-from typing import Union, Type
 
 
 class AccountSummaryList:
@@ -128,7 +127,7 @@ class AccountSummary:
     API reference page:
     https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/management/accountSummaries
     """
-    def __init__(self, json_as_dict):
+    def __init__(self, json_as_dict: dict):
         """
         :param json_as_dict: a dictionary that represent the JSON response from the Google API
         """
@@ -169,7 +168,7 @@ class WebProperty:
         API reference page:
         https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/management/accountSummaries
         """
-    def __init__(self, json_as_dict):
+    def __init__(self, json_as_dict: dict):
         """
         :param json_as_dict: a dictionary that represent the JSON response from the Google API
         """
@@ -225,7 +224,7 @@ class Profile:
         API reference page:
         https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/management/accountSummaries
     """
-    def __init__(self, json_as_dict):
+    def __init__(self, json_as_dict: dict):
         """
         :param json_as_dict: a dictionary that represent the JSON response from the Google API
         """
