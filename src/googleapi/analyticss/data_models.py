@@ -6,7 +6,7 @@ allow a better understanding of the data used in the scripts.
 
 API reference page: https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/
 """
-from typing import Generic, TypeVar, Type, Union
+from typing import Type, Union
 
 
 class AccountSummaryList:
