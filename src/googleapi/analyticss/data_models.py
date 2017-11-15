@@ -264,7 +264,7 @@ class GenericWrappingIterator:
         :param items: the (dict) items over which we want to iterate
         :param wrapper_class: each item returned while iterating using this iterator will
         be wrapped using the class provided by wrapper_class
-        :type wrapper_class: : AccountSummary or WebProperty or Type[Profile]
+        :type wrapper_class: : AccountSummary or WebProperty or Profile
         """
         self._wrapper_class = wrapper_class
         self._items = items
