@@ -23,7 +23,7 @@ monitisapi = {
         "get_auth_token": "authToken"
     },
     "api_url": "http://dashboard.monitis.com/api",
-    "default_tag": '["Default"]',
+    "default_tag": '["test"]',
     "version": "2",
     # "custom_action": {
     #     "base_url": "http://api.monitis.com/customMonitorApi"
