@@ -21,4 +21,7 @@ def add_rum_monitor(monitor_name: str, resource_url: str, auth_token: str):
 
 
 def list_monitors():
-    return
+    search_url = settings.monitisapi["search_url"].format(
+        user_key=settings.monitisapi["credentials"]["user_key"])
+    response = requests.get(search_url)
+    return response.json()["searchItems"]["monitors"]
