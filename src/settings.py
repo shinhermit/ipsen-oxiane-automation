@@ -22,11 +22,12 @@ monitisapi = {
         "add_rum": "addCompositeMonitor",
         "get_auth_token": "authToken"
     },
+    "api_url": "http://dashboard.monitis.com/api",
     "default_tag": '["Default"]',
     "version": "2",
-    "custom_action": {
-        "base_url": "http://api.monitis.com/customMonitorApi"
-    },
+    # "custom_action": {
+    #     "base_url": "http://api.monitis.com/customMonitorApi"
+    # },
     "credentials": {
         # apy key from the monitis account, in the Tools > API menu.
         "api_key": "24DRL1UFK3FU4LECK8C3JCGLFA",

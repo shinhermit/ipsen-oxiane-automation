@@ -4,7 +4,7 @@ properties declared in Google Analytics
 """
 from src import settings
 from src.googleapi.api_connector import get_service
-from src.googleapi.analyticss.data_models import AccountSummaryList
+from src.googleapi.analyticss.data_model import AccountSummaryList
 from googleapiclient.http import BatchHttpRequest
 
 
