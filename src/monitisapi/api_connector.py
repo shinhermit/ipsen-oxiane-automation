@@ -110,11 +110,12 @@ class Service:
             params=self.get_auth_token_request_data())
         return response.json()["authToken"]
 
-    def add_rum_monitor(self, monitor_name: str, resource_url: str, auth_token: str):
+    def add_rum_monitor(self, monitor_name: str, resource_url: str, auth_token: str, tag: str):
         data = self.get_add_monitor_request_data(
             auth_token=auth_token,
             monitor_name=monitor_name,
-            resource_url=resource_url)
+            resource_url=resource_url,
+            tag=tag)
         response = requests.post(settings.monitisapi["api_url"], data=data)
         print(response.json())
 
