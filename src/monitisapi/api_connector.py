@@ -6,13 +6,12 @@ from src import settings
 
 
 class Service:
+    """
+    Monitis connection utility.
+
+    api_key, secret_key and agent_key can be obtanined from the Monitis account under the Tools > API menu.
+    """
     def __init__(self):
-        """
-        :api_key: API access key, from client_secret.json file. Ti Can be obtain via
-        the Monitis account under the Tools > API menu.
-        :secret_key:API access secret key, from client_secret.json file. It can be
-        obtain via the Monitis account under the Tools > API menu.
-        """
         with open(settings.monitisapi["credentials"]["client_secret_path"], "r") as file:
             secret_credentials = json.loads(file.read())
         self.api_key = secret_credentials["api_key"]
