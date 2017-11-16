@@ -1,6 +1,6 @@
 """
-This script creates properties in Google Search Console based on
-properties declared in Google Analytics
+This script creates a list of all the properties (and the corresponding account)
+from a given Google Analytics Account
 """
 import csv
 from src import settings

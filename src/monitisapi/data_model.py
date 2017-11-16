@@ -38,6 +38,7 @@ def get_auth_token_request_data(
 def get_add_monitor_request_data(auth_token: str,
                                  monitor_name: str,
                                  resource_url: str,
+                                 tag: str or settings.monitisapi["monitor"]["default_tag"],
                                  monitor_type: str = settings.monitisapi["monitor"]["monitor_default_type"],
                                  monitor_params: str = settings.monitisapi["monitor"]["monitor_params"],
                                  result_params: str = settings.monitisapi["monitor"]["result_params"],
@@ -45,8 +46,8 @@ def get_add_monitor_request_data(auth_token: str,
                                  from_dashboard: bool = True,
                                  record_api_call: bool = False,
                                  version: str = settings.monitisapi["api_version"],
-                                 auth_method: str = settings.monitisapi["credentials"]["auth_method"],
-                                 tag: str = settings.monitisapi["monitor"]["default_tag"]) -> dict:
+                                 auth_method: str = settings.monitisapi["credentials"]["auth_method"]) -> dict:
+                                 # tag: str = settings.monitisapi["monitor"]["default_tag"]) -> dict:
     """
     Provides a dictionary that can be used to create a monitor in Monitis.
 

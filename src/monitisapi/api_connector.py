@@ -11,13 +11,14 @@ def get_token() -> str:
     return response.json()["authToken"]
 
 
-def add_rum_monitor(monitor_name: str, resource_url: str, auth_token: str):
+def add_rum_monitor(monitor_name: str, resource_url: str, auth_token: str, tag: str):
     data = data_model.get_add_monitor_request_data(
         auth_token=auth_token,
         monitor_name=monitor_name,
-        resource_url=resource_url)
+        resource_url=resource_url,
+        tag=tag)
     response = requests.post(settings.monitisapi["api_url"], data=data)
-    print(response.json())
+    print(response.json(), resource_url)
 
 
 def list_monitors():
