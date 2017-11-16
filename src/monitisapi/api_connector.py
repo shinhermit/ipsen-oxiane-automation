@@ -9,7 +9,20 @@ class Service:
     """
     Monitis connection utility.
 
-    api_key, secret_key and agent_key can be obtanined from the Monitis account under the Tools > API menu.
+    This service retrieves the private credentials from the file specified in the in the setting:
+    settings.monitisapi["credentials"]["client_secret_path"]
+
+    This file has the structure:
+    ``
+    {
+      "api_key": "secret api key",
+      "secret_key": "secret client key",
+      "agent_key": "secret agent key",
+      "user_key": "secret user key"
+    }
+    ``
+
+    api_key, secret_key and agent_key can be obtained from the Monitis account under the Tools > API menu.
     """
     def __init__(self):
         with open(settings.monitisapi["credentials"]["client_secret_path"], "r") as file:
