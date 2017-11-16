@@ -2,8 +2,8 @@
 
 googleapi = {
     "credentials": {
-        "client_secret_path": "./etc/credentials/client_secret.json",
-        "credentials_base_path": "./etc/credentials/"
+        "client_secret_path": "./etc/credentials/googleapi/client_secret.json",
+        "credentials_base_path": "./etc/credentials/googleapi/"
     },
     "analytics": {
         "api_name": "analytics",
@@ -27,11 +27,9 @@ monitisapi = {
         "add_rum": "addCompositeMonitor",
         "get_auth_token": "authToken"
     },
-    "credentials": {  # Most values are from Monitis's Tools menu.
-        "api_key": "24DRL1UFK3FU4LECK8C3JCGLFA",
-        "secret_key": "5N5BMKERKKK1S7FER2GLEBF7M4",
-        "agent_key": "4HJLF3JQJPGOCBE8EP5IE8BT0G",
-        "user_key": "7C62EQ8JGADT280Q09EGKO4AK7",
+    "credentials": {
+        # Most values are from Monitis's Tools menu.
+        "client_secret_path": "./etc/credentials/monitisapi/secret_credentials.json",
         "auth_method": "token"
     },
     "monitor": {
