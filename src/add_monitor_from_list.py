@@ -9,7 +9,7 @@ import sys
 
 
 def main():
-    auth_token = api_connector.get_token()
+    auth_token = api_connector.service.get_token()
     cpt = 0
     if len(sys.argv) > 1 and sys.argv[1].endswith('csv'):
         with open(sys.argv[1], "r") as csvfile:
@@ -17,10 +17,10 @@ def main():
             for row in reader:
                 cpt += 1
                 resource_url, monitor_name = set_values(row['Properties'].split('//')[1])
-                api_connector.add_rum_monitor(auth_token=auth_token,
-                                              monitor_name=monitor_name,
-                                              resource_url=resource_url,
-                                              tag='["'+row['Account']+'"]')
+                api_connector.service.add_rum_monitor(auth_token=auth_token,
+                                                      monitor_name=monitor_name,
+                                                      resource_url=resource_url,
+                                                      tag='["'+row['Account']+'"]')
     elif len(sys.argv) == 1:
         print("Please give a file to the script")
     else:
