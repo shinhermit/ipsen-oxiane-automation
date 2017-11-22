@@ -42,3 +42,10 @@ monitisapi = {
         "dump_file": "./etc/dump/rum_monitors.csv"
     }
 }
+
+
+awsapi = {
+    "route53": {
+        "dump_file_path": "./etc/dump/AWS_backup_files/"
+    }
+}
