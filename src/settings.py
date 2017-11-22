@@ -10,7 +10,7 @@ googleapi = {
         "api_version": "v3",
         "scopes": ["https://www.googleapis.com/auth/analytics.edit",
                    "https://www.googleapis.com/auth/analytics.readonly"],
-        "dump_file": "./etc/dump/properties.csv"
+        "dump_file": "./etc/dump/GA_property_list.csv"
     },
     "search_console": {
         "api_name": "webmasters",
