@@ -21,7 +21,8 @@ class HostedZone:
 class ResourceRecordSets:
     def __init__(self, json_as_dict):
         self.data = json_as_dict
-        self._items_iterator = GenericWrappingIterator((self.data.get('ResourceRecords'), []), ResourceRecords)
+        self._items_iterator1 = GenericWrappingIterator(self.data.get("ResourceRecords", []), ResourceRecords)
+        # self._items_iterator2 = GenericWrappingIterator(self.data.get("AliasTarget", []), AliasTarget)
 
     @property
     def name(self):
@@ -37,17 +38,40 @@ class ResourceRecordSets:
 
     @property
     def resource_records(self):
-        return self._items_iterator
+        if self.data.get('ResourceRecords'):
+            return self._items_iterator1
+        else:
+            return None
+
+    @property
+    def alias_target(self):
+        if self.data.get('AliasTarget'):
+            return AliasTarget(self.data.get('AliasTarget')['HostedZoneId'], self.data.get('AliasTarget')['DNSName'])
+        else:
+            return None
 
 
 class ResourceRecords:
     def __init__(self, json_as_dict):
         self.data = json_as_dict
 
-    # c'est une liste
-    # @property
-    # def value(self):
-    #     return self.data.get('value')
+    @property
+    def value(self):
+        return self.data.get('Value')
+
+
+class AliasTarget:
+    def __init__(self,  hosted_zoned_id, dns_name):
+        self.hosted_zone_id = hosted_zoned_id
+        self.dns_name = dns_name
+
+    @property
+    def dns_name_get(self):
+        return self.hosted_zone_id
+
+    @property
+    def hosted_zone_id_get(self):
+        return self.dns_name
 
 
 class GenericWrappingIterator:
