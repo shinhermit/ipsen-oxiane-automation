@@ -22,11 +22,14 @@ class ResourceRecordSets:
     def __init__(self, json_as_dict):
         self.data = json_as_dict
         self._items_iterator1 = GenericWrappingIterator(self.data.get("ResourceRecords", []), ResourceRecords)
-        # self._items_iterator2 = GenericWrappingIterator(self.data.get("AliasTarget", []), AliasTarget)
 
     @property
     def name(self):
         return self.data.get('Name')
+
+    @property
+    def region(self):
+        return self.data.get('Region')
 
     @property
     def ttl(self):
@@ -35,6 +38,23 @@ class ResourceRecordSets:
     @property
     def type(self):
         return self.data.get("Type")
+
+    @property
+    def geo_location(self):
+        if self.data.get('GeoLocation'):
+            continent_code = self.data.get('GeoLocation')['ContinentCode']
+            keys = self.data.get('GeoLocation').keys()
+            if "CountryCode" in keys:
+                country_code = self.data.get('GeoLocation')['CountryCode']
+            else:
+                country_code = None
+            if "SubdivisionCode" in keys:
+                subdivision_code = self.data.get('GeoLocation')['SubdivisionCode']
+            else:
+                subdivision_code = None
+            return GeoLocation(continent_code, country_code, subdivision_code)
+        else:
+            return None
 
     @property
     def resource_records(self):
@@ -60,6 +80,25 @@ class ResourceRecords:
         return self.data.get('Value')
 
 
+class GeoLocation:
+    def __init__(self, continent_code, country_code=None, subdivision_code=None):
+        self.continent_code = continent_code
+        self.country_code = country_code
+        self.subdivision_code = subdivision_code
+
+    @property
+    def continent_code_get(self):
+        return self.continent_code
+
+    @property
+    def country_code_get(self):
+        return self.country_code
+
+    @property
+    def subdivision_code_get(self):
+        return self.subdivision_code
+
+
 class AliasTarget:
     def __init__(self,  hosted_zoned_id, dns_name):
         self.hosted_zone_id = hosted_zoned_id
@@ -67,11 +106,11 @@ class AliasTarget:
 
     @property
     def dns_name_get(self):
-        return self.hosted_zone_id
+        return self.dns_name
 
     @property
     def hosted_zone_id_get(self):
-        return self.dns_name
+        return self.hosted_zone_id
 
 
 class GenericWrappingIterator:

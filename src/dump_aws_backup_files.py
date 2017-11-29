@@ -25,7 +25,7 @@ def main():
                                                               "comment": "Zone record for "+zone['name'],
                                                               "RecordSets": append_dict(zone_details)}}}}
         with open(settings.awsapi['route53']['dump_file_path']+zone["name"]+'yml', 'w') as outfile:
-            yaml.dump(yaml_dump, outfile, default_flow_style=False)
+            yaml.dump(yaml_dump, outfile, explicit_start=True, width=1000, default_flow_style=False)
 
 
 # def append_dict(record_set):

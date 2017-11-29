@@ -22,10 +22,10 @@ def main():
 
     with open(settings.googleapi['analytics']['dump_file'], 'w+', newline='') as csvfile:
         wr = csv.writer(csvfile)
-        wr.writerow(("Properties", "Account"))
+        wr.writerow(("Account Id", "Account", "Properties Id", "Properties"))
         for account in acc_list.items:
             for web_property in account.web_properties:
-                wr.writerow((web_property.website_url, account.name))
+                wr.writerow((account.id, account.name, web_property.id, web_property.website_url))
 
 
 if __name__ == "__main__":
