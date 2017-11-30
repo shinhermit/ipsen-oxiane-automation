@@ -17,6 +17,12 @@ googleapi = {
         "api_version": "v3",
         "scopes": ['https://www.googleapis.com/auth/webmasters',
                    'https://www.googleapis.com/auth/webmasters.readonly']
+    },
+    "tag_manager": {
+        "api_name": "tagmanager",
+        "api_version": "v2",
+        "scopes": ['https://www.googleapis.com/auth/tagmanager.edit.containers',
+                   'https://www.googleapis.com/auth/tagmanager.readonly']
     }
 }
 
