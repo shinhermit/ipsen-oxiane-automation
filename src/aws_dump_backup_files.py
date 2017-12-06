@@ -7,7 +7,7 @@ import boto3
 import yaml
 import datetime
 from src import settings
-from src.awsapi.data_model import HostedZone
+from src.awsapi.data_model import ResourceRecordSetsList
 
 
 def main():
@@ -20,7 +20,8 @@ def main():
         hosted_zone_list.append({"id": hosted_zone["Id"].split('/')[2], "name": hosted_zone["Name"]})
 
     for zone in hosted_zone_list:
-        zone_details = HostedZone(client.list_resource_record_sets(HostedZoneId=zone["id"]))
+        zone_details = ResourceRecordSetsList(client.list_resource_record_sets(HostedZoneId=zone["id"]))
+        print(client.list_resource_record_sets(HostedZoneId=zone["id"]))
         yaml_dump = {#"AWSTemplateFormatVersion": str(datetime.datetime.now().strftime('%Y-%m-%d')),
                      "AWSTemplateFormatVersion": '2010-09-09',
                      "Description": "Backup definition for the "+zone['name']+" zone",
@@ -46,8 +47,8 @@ def append_dict(hosted_zone):
                 temp.append(resource_records.value)
                 dictionary['ResourceRecord'] = temp
         elif resource_record_sets.alias_target:
-            dictionary['AliasTarget'] = {"DNSName": resource_record_sets.alias_target.dns_name,
-                                         "HostedZoneId": resource_record_sets.alias_target.hosted_zone_id}
+            dictionary['AliasTarget'] = {"DNSName": resource_record_sets.alias_target.dns_name_get,
+                                         "HostedZoneId": resource_record_sets.alias_target.hosted_zone_id_get}
 
         returned_list.append(dictionary)
     return returned_list
