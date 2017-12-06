@@ -1,10 +1,6 @@
 """
-The classes in this module represent the data model of Google Analytics API.
-
-They are basically wrapper over dicts parsed from JSON returned by the API. These models
-allow a better understanding of the data used in the scripts.
-
-API reference page: https://developers.google.com/analytics/devguides/config/mgmt/v3/mgmtReference/
+The classes in this module are common model used to represent the data
+manipulated in the various APIs.
 """
 from typing import TypeVar, List, Dict
 
