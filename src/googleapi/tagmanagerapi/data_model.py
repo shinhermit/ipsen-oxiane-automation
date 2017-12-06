@@ -1,3 +1,5 @@
+from src.common.data_model import GenericWrappingIterator
+
 
 class AccountsList:
 
@@ -59,24 +61,4 @@ class Container:
     @property
     def name(self):
         return self.data.get('name')
-
-
-class GenericWrappingIterator:
-
-    def __init__(self, items, wrapper_class):
-        self._items = items
-        self._wrapper_class = wrapper_class
-        self._items_iterator = iter(items)
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        return self._wrapper_class(next(self._items_iterator))
-
-    def __getitem__(self, key):
-        return self._wrapper_class(self._items['key'])
-
-    def __len__(self):
-        return len(self._items)
 
