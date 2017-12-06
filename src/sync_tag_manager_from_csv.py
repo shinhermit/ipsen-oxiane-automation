@@ -4,7 +4,7 @@ import re
 from src import settings
 from src.googleapi.api_connector import get_service
 from googleapiclient.http import BatchHttpRequest
-from src.googleapi.tagmanagerapi.data_model import AccountsList, ContainersList
+from src.googleapi.tagmanagerapi.data_model import AccountsList
 
 client_secrets_path = settings.googleapi["credentials"]['client_secret_path']
 tag_manager_settings = settings.googleapi["tag_manager"]
@@ -15,9 +15,9 @@ api_tag_manager = get_service(api_name=tag_manager_settings["api_name"],
 
 account_to_properties = {}
 
+
 with open(sys.argv[1], "r") as csvfile:
     reader = csv.DictReader(csvfile)
-    test = 2
     for row in reader:
         if not row["Account"] in account_to_properties:
             account_to_properties[row["Account"]] = [row["Properties"]]
@@ -34,7 +34,7 @@ for account in account_list.account:
         if key == account.name and key not in key_done:
             for prop in account_to_properties[key]:
                 prop = re.sub(r'.*://', '', prop)
-                if re.search(r'/',prop):
+                if re.search(r'/', prop):
                     print("%s ne peux pas être ajouté à cause du /" % prop)
                 else:
                     print(prop)
@@ -42,7 +42,10 @@ for account in account_list.account:
                         "name": prop,
                         "usageContext": ["web"]
                     }
-                    batch.add(api_tag_manager.accounts().containers().create(parent='accounts/' + account.account_id, body=body))
+                    batch.add(api_tag_manager
+                              .accounts()
+                              .containers()
+                              .create(parent='accounts/' + account.account_id, body=body))
             key_done.append(key)
 batch.execute()
 

@@ -3,6 +3,8 @@ This script creates a list of all the properties (and the corresponding account)
 from a given Google Analytics Account
 """
 import csv
+import logging
+import re
 from src import settings
 from src.googleapi.api_connector import get_service
 from src.googleapi.analyticss.data_model import AccountSummaryList
@@ -22,10 +24,13 @@ def main():
 
     with open(settings.googleapi['analytics']['dump_file'], 'w+', newline='') as csvfile:
         wr = csv.writer(csvfile)
-        wr.writerow(("Account Id", "Account", "Properties Id", "Properties"))
+        wr.writerow(("Account Id", "Account", "Properties Id", "Properties", "Sans URL"))
         for account in acc_list.items:
+
+            print(account.data)
             for web_property in account.web_properties:
-                wr.writerow((account.id, account.name, web_property.id, web_property.website_url))
+                wo_url = re.sub(r'(.*//www.|.*//)', '', web_property.website_url)
+                wr.writerow((account.id, account.name, web_property.id, web_property.website_url, wo_url))
 
 
 if __name__ == "__main__":
