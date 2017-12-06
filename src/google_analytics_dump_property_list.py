@@ -26,10 +26,9 @@ def main():
         wr = csv.writer(csvfile)
         wr.writerow(("Account Id", "Account", "Properties Id", "Properties", "Without URL"))
         for account in acc_list.items:
-
-            print(account.data)
             for web_property in account.web_properties:
                 wo_url = re.sub(r'(.*//www.|.*//)', '', web_property.website_url)
+                print("Currently in %s Account, in the %s property" % (account.name, wo_url))
                 wr.writerow((account.id, account.name, web_property.id, web_property.website_url, wo_url))
 
 
