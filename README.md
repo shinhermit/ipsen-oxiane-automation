@@ -26,3 +26,17 @@ The location of the client_secret.json is defined in the settings.py file and de
 ```
 ./etc/credentials/googleapi/client_secret.json
 ```
+
+### AWS API credentials
+
+To configure your credentials, you can do it through the AWS cli as follows:
+
+```
+**$ aws configure**
+AWS Access Key ID [None]: Your Access Key
+AWS Secret Access Key [None]: Your Secret Access Key
+Default region name [None]: us-west-2
+Default output format [None]: json
+```
+
+You can find the Access Key and the Secret Access Key in the AWS console
