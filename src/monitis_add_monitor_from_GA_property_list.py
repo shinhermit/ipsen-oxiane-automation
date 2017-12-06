@@ -10,7 +10,7 @@ import sys
 
 def main():
     auth_token = api_connector.service.get_token()
-    dico = {}
+    monitors_dict = {}
     with open(sys.argv[1], "r") as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
@@ -22,14 +22,14 @@ def main():
                 parts = props.split('//')
                 if len(parts) > 1:
                     monitor_name = set_values(dns)
-                    dico[monitor_name] = {"url": parts[1], "account": row['Account']}
+                    monitors_dict[monitor_name] = {"url": parts[1], "account": row['Account']}
             else:
                 print("Warning, this property can't be monitored.It might be an application")
-    for key in dico.keys():
+    for monitor_name, monitor in monitors_dict.items():
         api_connector.service.add_rum_monitor(auth_token=auth_token,
-                                              monitor_name=key,
-                                              resource_url=dico[key].get('url'),
-                                              tag='["'+dico[key].get('account')+'"]')
+                                              monitor_name=monitor_name,
+                                              resource_url=monitor.get('url'),
+                                              tag='["'+monitor.get('account')+'"]')
 
 
 def set_values(resource_url):
