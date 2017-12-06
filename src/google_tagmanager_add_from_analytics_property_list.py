@@ -1,3 +1,9 @@
+"""
+For the accounts:  https://developers.google.com/tag-manager/api/v2/reference/accounts/get
+For the containers : https://developers.google.com/tag-manager/api/v2/reference/accounts/containers/create
+"""
+
+
 import csv
 import sys
 import re
