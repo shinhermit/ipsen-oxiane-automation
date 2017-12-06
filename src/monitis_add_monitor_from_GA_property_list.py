@@ -15,7 +15,7 @@ def main():
         reader = csv.DictReader(csvfile)
         for row in reader:
             props = row.get('Properties')
-            dns = row.get('Sans URL')
+            dns = row.get('Without URL')
             if props:
                 if dns.find('/'):
                     dns = dns.split('/')[0]

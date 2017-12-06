@@ -35,7 +35,7 @@ for account in account_list.account:
             for prop in account_to_properties[key]:
                 prop = re.sub(r'.*://', '', prop)
                 if re.search(r'/', prop):
-                    print("%s ne peux pas être ajouté à cause du /" % prop)
+                    print("%s can't be add due to the /" % prop)
                 else:
                     print(prop)
                     body = {
@@ -53,6 +53,6 @@ for key in key_done:
     account_to_properties.pop(key)
 
 for ma in account_to_properties.keys():
-    print("il manque l'account %s" % ma)
+    print("The account %s is missing, please create it manually if you want to add some containers to it" % ma)
 
 

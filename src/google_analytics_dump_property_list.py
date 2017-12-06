@@ -24,7 +24,7 @@ def main():
 
     with open(settings.googleapi['analytics']['dump_file'], 'w+', newline='') as csvfile:
         wr = csv.writer(csvfile)
-        wr.writerow(("Account Id", "Account", "Properties Id", "Properties", "Sans URL"))
+        wr.writerow(("Account Id", "Account", "Properties Id", "Properties", "Without URL"))
         for account in acc_list.items:
 
             print(account.data)

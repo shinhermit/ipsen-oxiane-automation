@@ -16,7 +16,8 @@ def main():
 
     for zone in hosted_zone_list:
         zone_details = HostedZone(client.list_resource_record_sets(HostedZoneId=zone["id"]))
-        yaml_dump = {"AWSTemplateFormatVersion": str(datetime.datetime.now().strftime('%Y-%m-%d')),
+        yaml_dump = {#"AWSTemplateFormatVersion": str(datetime.datetime.now().strftime('%Y-%m-%d')),
+                     "AWSTemplateFormatVersion": '2010-09-09',
                      "Description": "Backup definition for the "+zone['name']+" zone",
                      "Resources": {"Zone": {"Type": "AWS::Route53::HostedZone",
                                             "Properties": {"Name": zone["name"]}},
@@ -27,29 +28,6 @@ def main():
         with open(settings.awsapi['route53']['dump_file_path']+zone["name"]+'yml', 'w') as outfile:
             yaml.dump(yaml_dump, outfile, explicit_start=True, width=1000, default_flow_style=False)
 
-
-# def append_dict(record_set):
-#     returned_list = []
-#     # for record in record_set.resource_record_sets:
-#     for record in record_set['ResourceRecordSets']:
-#         temp = []
-#         # dictionary = {"Name": record.name,
-#         #               "Type": record.type,
-#         #               "TTL": record.ttl}
-#         dictionary = {"Name": record['Name'],
-#                       "Type": record['Type']}
-#         # for resource in record.resource_records:
-#         if "ResourceRecords" in record.keys():
-#             dictionary['TTL'] = record['TTL']
-#             for resource in record['ResourceRecords']:
-#                 temp.append(resource['Value'])
-#                 dictionary['ResourceRecord'] = temp
-#
-#         elif "AliasTarget" in record.keys():
-#             dictionary['AliasTarget'] = {"DNSName": record['AliasTarget']['DNSName'],
-#                                          "HostedZoneId": record['AliasTarget']['HostedZoneId']}
-#         returned_list.append(dictionary)
-#     return returned_list
 
 def append_dict(hosted_zone):
     returned_list = []
