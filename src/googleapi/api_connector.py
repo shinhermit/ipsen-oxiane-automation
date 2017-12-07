@@ -22,8 +22,6 @@ from oauth2client import client
 from oauth2client import file
 from oauth2client import tools
 
-from src import settings
-
 
 def create_oauth_flow(client_secrets_path: str, scope: List[str]) -> client.Flow:
     """
@@ -62,7 +60,7 @@ def get_service(api_name: str, api_version: str, scope: List[str], client_secret
     :param client_secrets_path: A path to a valid client secrets file.
     :return: A service that is connected to the specified API.
     """
-    credentials_base_path = os.path.dirname(client_secrets_path)
+    credentials_base_path = os.path.dirname(client_secrets_path) + "/"
     flow = create_oauth_flow(client_secrets_path, scope)
     http = get_authorized_http_object(credentials_base_path, api_name, flow)
     return googleapiclient.discovery.build(api_name, api_version, http=http)
