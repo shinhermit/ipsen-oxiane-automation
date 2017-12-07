@@ -87,6 +87,13 @@ etc/bin/venv/bin/python google_analytics_dump_property_list.py \
             --output etc/dump/GA_property_list.csv
 ```
 
+Sample result:
+
+```
+Account Id,Account,Properties Id,Properties,Without URL
+11111111,External Communication,UA-11111111-1,http://ipsen.com,ipsen.com
+```
+
 ### Google Search Console Add Sites From Analytics Properties
 
 Add sites in Google Search Console from a list of properties previously dumped from
@@ -128,4 +135,11 @@ Dum the list of all Monitis RUM monitors in a CSV file.
 etc/bin/venv/bin/python monitis_dump_monitor_list.py \
             --credentials etc/credentials/monitisapi/secret_credentials.json
             --output etc/dump/monitis_rum_monitors.csv
+```
+
+Sample result:
+
+```
+Domain,URL,Monitor ID
+"www.ipsen.co.uk/","www.ipsen.co.uk/",111111
 ```
