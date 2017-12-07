@@ -109,7 +109,7 @@ class AccountSummaryList:
         return self.data.get("nextLink")
 
     @property
-    def items(self) -> 'GenericWrappingIterator':
+    def items(self) -> GenericWrappingIterator:
         """
         Iterator to iterate over AccountSummary items of this AccountSummaryList.
 
@@ -151,7 +151,7 @@ class AccountSummary:
         return self.data.get("name")
 
     @property
-    def web_properties(self) -> 'GenericWrappingIterator':
+    def web_properties(self) -> GenericWrappingIterator:
         """
         Iterator to iterate over WebProperty items of this AccountSummary.
 
@@ -207,7 +207,7 @@ class WebProperty:
         return self.data.get("websiteUrl")
 
     @property
-    def profiles(self) -> 'GenericWrappingIterator':
+    def profiles(self) -> GenericWrappingIterator:
         """
         Iterator to iterate over Profile items of this WebProperty.
 

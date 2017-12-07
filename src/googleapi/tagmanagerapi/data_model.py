@@ -39,7 +39,7 @@ class AccountsList:
         self._accounts_iterator = GenericWrappingIterator(self.data.get("account", []), Account)
 
     @property
-    def account(self) -> 'GenericWrappingIterator':
+    def account(self) -> GenericWrappingIterator:
         """
         Iterator to iterate over Account items of this AccountList.
 
