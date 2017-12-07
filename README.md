@@ -75,13 +75,16 @@ Create a credentials file for Monitis with the following content:
 The secret key however can be found using the Network tool of a browser and request the listing of
 monitors on the Monitis' website.
 
+When executing any script the calls the Monitis API, use the --credentials option to provide the path to the credentials file
+you created.
+
 ## Executing the scripts
 
 ### Google Analytics :: Dump Properties
 
-Dum the list of all Google Analytics properties in a CSV file. Example:
+Dump the list of all Google Analytics properties in a CSV file. Example:
 
-```
+```bash
 etc/bin/venv/bin/python google_analytics_dump_property_list.py \
             --credentials etc/credentials/googleapi/client_secret.json
             --output etc/dump/GA_property_list.csv
@@ -89,7 +92,7 @@ etc/bin/venv/bin/python google_analytics_dump_property_list.py \
 
 Sample result:
 
-```
+```csv
 Account Id,Account,Properties Id,Properties,Without URL
 11111111,External Communication,UA-11111111-1,http://ipsen.com,ipsen.com
 ```
@@ -99,7 +102,7 @@ Account Id,Account,Properties Id,Properties,Without URL
 Add sites in Google Search Console from a list of properties previously dumped from
 Google Analytics.
 
-```
+```bash
 etc/bin/venv/bin/python google_search_console_add_from_analytics_property_list.py \
             --credentials etc/credentials/googleapi/client_secret.json
             --input etc/dump/GA_property_list.csv
@@ -110,7 +113,7 @@ etc/bin/venv/bin/python google_search_console_add_from_analytics_property_list.p
 Add tags in Google Tag Manager from a list of properties previously dumped from
 Google Analytics.
 
-```
+```bash
 etc/bin/venv/bin/python google_tagmanager_add_from_analytics_property_list.py \
             --credentials etc/credentials/googleapi/client_secret.json
             --input etc/dump/GA_property_list.csv
@@ -121,7 +124,7 @@ etc/bin/venv/bin/python google_tagmanager_add_from_analytics_property_list.py \
 Add monitors in Monitis from a list of properties previously dumped from
 Google Analytics.
 
-```
+```bash
 etc/bin/venv/bin/python monitis_add_monitor_from_GA_property_list.py \
             --credentials etc/credentials/monitisapi/secret_credentials.json
             --input etc/dump/GA_property_list.csv
@@ -129,9 +132,9 @@ etc/bin/venv/bin/python monitis_add_monitor_from_GA_property_list.py \
 
 ### Monitis :: Dump Monitors list
 
-Dum the list of all Monitis RUM monitors in a CSV file.
+Dum the list of all Monitis' monitors in a CSV file.
 
-```
+```bash
 etc/bin/venv/bin/python monitis_dump_monitor_list.py \
             --credentials etc/credentials/monitisapi/secret_credentials.json
             --output etc/dump/monitis_rum_monitors.csv
@@ -139,7 +142,7 @@ etc/bin/venv/bin/python monitis_dump_monitor_list.py \
 
 Sample result:
 
-```
+```csv
 Domain,URL,Monitor ID
 "www.ipsen.co.uk/","www.ipsen.co.uk/",111111
 ```
@@ -150,7 +153,7 @@ Dump a YAML backup file for the AWS Route53 hosted zones.
 
 Don't forget the ending '/' if you specify a folder
 
-```
+```bash
 etc/bin/venv/bin/python aws_dump_backup_files.py \
             --output etc/dump/aws_backup_files/
 ```
