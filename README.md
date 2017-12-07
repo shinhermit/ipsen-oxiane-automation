@@ -52,6 +52,8 @@ $ aws configure
  > Default output format [None]: json
 ```
 
+AWS CLI is part of the project requirements (listed in the requirements.txt) file.
+
 You can find the _Access Key_ and the _Secret Access Key_ in the AWS console.
 
 [More info here](http://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html "AWS CLI")
