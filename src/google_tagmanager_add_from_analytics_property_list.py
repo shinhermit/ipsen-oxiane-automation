@@ -36,6 +36,7 @@ with open(args.input_file, "r") as csv_file:
 
 key_done = []
 account_list = AccountsList(api_tag_manager.accounts().list().execute())
+
 batch = BatchHttpRequest()
 
 # for account in account_list.account:
@@ -64,23 +65,20 @@ for account in account_list.account:
         for prop in account_to_properties[account.name]:
             prop = re.sub(r'(.*://)(www.)?', '', prop)
             if re.search('/.*', prop):
-                print("%s can't be add due to the /" % prop)
-            else:
-                body = {
-                    "name": prop,
-                    "usageContext": ["web"]
-                }
-                batch.add(api_tag_manager
-                          .accounts()
-                          .containers()
-                          .create(parent='accounts/' + account.account_id, body=body))
+                prop = re.sub(r'/.*', '', prop)
+            body = {
+                "name": prop,
+                "usageContext": ["web"]
+            }
+            batch.add(api_tag_manager
+                      .accounts()
+                      .containers()
+                      .create(parent='accounts/' + account.account_id, body=body))
         key_done.append(account.name)
 batch.execute()
 
 for key in key_done:
     account_to_properties.pop(key)
-
-print(account_to_properties)
 
 for ma in account_to_properties.keys():
     print("The account %s is missing, please create it manually if you want to add some containers to it" % ma)
