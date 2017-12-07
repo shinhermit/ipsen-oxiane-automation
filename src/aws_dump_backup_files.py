@@ -5,15 +5,12 @@ http://boto3.readthedocs.io/en/latest/reference/services/route53.html#Route53.Cl
 
 import boto3
 import yaml
-from src import settings
 from src.awsapi.data_model import ResourceRecordSetsList
 from src import utils
 
 
 def main():
-    parser = utils.get_output_arg_parser(
-        description="Create a YAML backup for AWS route53",
-        default_output_file=settings.awsapi['route53']['dump_file_path'])
+    parser = utils.get_output_arg_parser(description="Create a YAML backup for AWS route53",)
     args = parser.parse_args()
 
     hosted_zone_list = []

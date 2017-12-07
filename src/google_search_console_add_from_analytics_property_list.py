@@ -2,25 +2,28 @@
 This script creates properties in Google Search Console based on
 properties declared in Google Analytics
 """
+from googleapiclient.http import BatchHttpRequest
 from src import settings
 from src.googleapi.api_connector import get_service
 from src.googleapi.analyticss.data_model import AccountSummaryList
-from googleapiclient.http import BatchHttpRequest
+from src import utils
 
 
 def main():
-    client_secrets_path = settings.googleapi["credentials"]['client_secret_path']
+    parser = utils.get_input_arg_parser(description="Add sites in google search console base on a "
+                                                    "list of google analytics properties from a CSV file.")
+    args = parser.parse_args()
 
     analytics_settings = settings.googleapi["analytics"]
     api_analytics = get_service(api_name=analytics_settings["api_name"],
                                 api_version=analytics_settings['api_version'],
-                                client_secrets_path=client_secrets_path,
+                                client_secrets_path=args.credentials,
                                 scope=analytics_settings['scopes'])
 
     search_console_settings = settings.googleapi["search_console"]
     api_search_console = get_service(api_name=search_console_settings["api_name"],
                                      api_version=search_console_settings['api_version'],
-                                     client_secrets_path=client_secrets_path,
+                                     client_secrets_path=args.credentials,
                                      scope=search_console_settings['scopes'])
 
     account_summaries = api_analytics.management().accountSummaries().list().execute(num_retries=10)

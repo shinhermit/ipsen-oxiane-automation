@@ -11,9 +11,7 @@ from src import utils
 
 
 def main():
-    parser = utils.get_output_arg_parser(description="Dump the list of all Google Analytics properties.",
-                                         default_credentials=settings.googleapi["credentials"]['client_secret_path'],
-                                         default_output_file=settings.googleapi['analytics']['dump_file'])
+    parser = utils.get_output_arg_parser(description="Dump the list of all Google Analytics properties.")
     args = parser.parse_args()
 
     analytics_settings = settings.googleapi["analytics"]

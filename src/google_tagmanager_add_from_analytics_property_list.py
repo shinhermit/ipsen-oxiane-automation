@@ -5,25 +5,29 @@ For the containers : https://developers.google.com/tag-manager/api/v2/reference/
 
 
 import csv
-import sys
 import re
 from src import settings
 from src.googleapi.api_connector import get_service
 from googleapiclient.http import BatchHttpRequest
 from src.googleapi.tagmanagerapi.data_model import AccountsList
+from src import utils
 
-client_secrets_path = settings.googleapi["credentials"]['client_secret_path']
+
+parser = utils.get_input_arg_parser(description="Add tags in google tag manager base on a "
+                                                "list of google analytics properties from a CSV file.")
+args = parser.parse_args()
+
 tag_manager_settings = settings.googleapi["tag_manager"]
 api_tag_manager = get_service(api_name=tag_manager_settings["api_name"],
                               api_version=tag_manager_settings['api_version'],
-                              client_secrets_path=client_secrets_path,
+                              client_secrets_path=args.credentials,
                               scope=tag_manager_settings['scopes'])
 
 account_to_properties = {}
 
 
-with open(sys.argv[1], "r") as csvfile:
-    reader = csv.DictReader(csvfile)
+with open(args.input_file, "r") as csv_file:
+    reader = csv.DictReader(csv_file)
     for row in reader:
         if not row["Account"] in account_to_properties:
             account_to_properties[row["Account"]] = [row["Properties"]]
