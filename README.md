@@ -77,7 +77,7 @@ monitors on the Monitis' website.
 
 ## Executing the scripts
 
-### Google Analytics Properties Dump
+### Google Analytics :: Dump Properties
 
 Dum the list of all Google Analytics properties in a CSV file. Example:
 
@@ -87,7 +87,14 @@ etc/bin/venv/bin/python google_analytics_dump_property_list.py \
             --output etc/dump/GA_property_list.csv
 ```
 
-### Google Search Console Add Sites From Analytics Properties
+Sample result:
+
+```
+Account Id,Account,Properties Id,Properties,Without URL
+11111111,External Communication,UA-11111111-1,http://ipsen.com,ipsen.com
+```
+
+### Google Search Console :: Add Sites From Analytics Properties
 
 Add sites in Google Search Console from a list of properties previously dumped from
 Google Analytics.
@@ -98,7 +105,7 @@ etc/bin/venv/bin/python google_search_console_add_from_analytics_property_list.p
             --input etc/dump/GA_property_list.csv
 ```
 
-### Google Tag Manager Add Tag From Analytics Properties
+### Google Tag Manager :: Add Tag From Analytics Properties
 
 Add tags in Google Tag Manager from a list of properties previously dumped from
 Google Analytics.
@@ -109,7 +116,7 @@ etc/bin/venv/bin/python google_tagmanager_add_from_analytics_property_list.py \
             --input etc/dump/GA_property_list.csv
 ```
 
-### Monitis Add Monitors From Analytics Properties
+### Monitis :: Add Monitors From Analytics Properties
 
 Add monitors in Monitis from a list of properties previously dumped from
 Google Analytics.
@@ -120,7 +127,7 @@ etc/bin/venv/bin/python monitis_add_monitor_from_GA_property_list.py \
             --input etc/dump/GA_property_list.csv
 ```
 
-### Monitis Dump Monitors list
+### Monitis :: Dump Monitors list
 
 Dum the list of all Monitis RUM monitors in a CSV file.
 
@@ -128,4 +135,22 @@ Dum the list of all Monitis RUM monitors in a CSV file.
 etc/bin/venv/bin/python monitis_dump_monitor_list.py \
             --credentials etc/credentials/monitisapi/secret_credentials.json
             --output etc/dump/monitis_rum_monitors.csv
+```
+
+Sample result:
+
+```
+Domain,URL,Monitor ID
+"www.ipsen.co.uk/","www.ipsen.co.uk/",111111
+```
+
+### AWS Route53 :: Dump Hosted Zones
+
+Dump a YAML backup file for the AWS Route53 hosted zones.
+
+Don't forget the ending '/' if you specify a folder
+
+```
+etc/bin/venv/bin/python aws_dump_backup_files.py \
+            --output etc/dump/aws_backup_files/
 ```

@@ -10,6 +10,7 @@ def main():
     service = api_connector.Service(args.credentials)
     res = service.list_monitors()
     with open(args.dump_file, "w+") as file:
+        file.write("Domain,URL,Monitor ID\n")
         for monitor in data_model.MonitorWrappingIterable(res):
             csv_line = '"{domain}","{url}",{id}\r\n'.format(
                 domain=monitor.params.domain,
