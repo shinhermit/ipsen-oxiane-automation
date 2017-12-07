@@ -5,14 +5,18 @@ given in a csv file on the Monitis Application
 
 from src.monitisapi import api_connector
 import csv
-import sys
+from src import utils
 
 
 def main():
-    auth_token = api_connector.service.get_token()
+    parser = utils.get_output_arg_parser(description="Dump the list of all Google Analytics properties.")
+    args = parser.parse_args()
+
+    service = api_connector.Service(args.credentials)
+    auth_token = service.get_token()
     monitors_dict = {}
-    with open(sys.argv[1], "r") as csvfile:
-        reader = csv.DictReader(csvfile)
+    with open(args.input_file, "r") as csv_file:
+        reader = csv.DictReader(csv_file)
         for row in reader:
             props = row.get('Properties')
             dns = row.get('Without URL')
@@ -26,10 +30,10 @@ def main():
             else:
                 print("Warning, this property can't be monitored.It might be an application")
     for monitor_name, monitor in monitors_dict.items():
-        api_connector.service.add_rum_monitor(auth_token=auth_token,
-                                              monitor_name=monitor_name,
-                                              resource_url=monitor.get('url'),
-                                              tag='["'+monitor.get('account')+'"]')
+        service.add_rum_monitor(auth_token=auth_token,
+                                monitor_name=monitor_name,
+                                resource_url=monitor.get('url'),
+                                tag='["'+monitor.get('account')+'"]')
 
 
 def set_values(resource_url):
