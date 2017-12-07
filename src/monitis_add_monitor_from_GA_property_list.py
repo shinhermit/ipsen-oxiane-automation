@@ -9,7 +9,7 @@ from src import utils
 
 
 def main():
-    parser = utils.get_output_arg_parser(description="Dump the list of all Google Analytics properties.")
+    parser = utils.get_input_arg_parser(description="Dump the list of all Google Analytics properties.")
     args = parser.parse_args()
 
     service = api_connector.Service(args.credentials)
