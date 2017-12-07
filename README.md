@@ -144,7 +144,7 @@ Sample result:
 
 ```csv
 Domain,URL,Monitor ID
-"www.ipsen.co.uk/","www.ipsen.co.uk/",111111
+"ipsen.co.uk","www.ipsen.co.uk/",111111
 ```
 
 ### AWS Route53 :: Dump Hosted Zones
