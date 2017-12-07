@@ -1,6 +1,7 @@
 import requests
 import datetime
 import json
+from typing import List
 
 from src import settings
 
@@ -137,7 +138,30 @@ class Service:
         response = requests.post(settings.monitisapi["api_url"], data=data)
         print(response.json())
 
-    def list_monitors(self):
+    def list_monitors(self) -> List[dict]:
+        """
+
+        :return: a list of dict in the form:
+            [
+                {
+                    "name": "ipsen.co.uk_RUM",
+                    "categoryId": 8,
+                    "category": "RUM",
+                    "type": "RUM",
+                    "id": 124115,
+                    "tag": "External Communication",
+                    "groups": ["External Communication"],
+                    "enabled": 1,
+                    "dataTypeId": 25,
+                    "params": {
+                        "ignoreQueryParams": "true",
+                        "domain": "www.ipsen.co.uk/",
+                        "aggType": "median"
+                    },
+                    "monitorTypeId": 71
+                }
+            ]
+        """
         search_url = settings.monitisapi["search_url"].format(user_key=self.user_key)
         response = requests.get(search_url)
         return response.json()["searchItems"]["monitors"]

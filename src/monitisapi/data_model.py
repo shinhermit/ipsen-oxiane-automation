@@ -5,7 +5,27 @@ from src import utils
 class Monitor:
     """
     Represents a monitor as return by Monitis when requesting the
-    list pf all monitors.
+    list of all monitors.
+
+    The wrapped data has the form:
+
+    {
+        "name": "ipsen.co.uk_RUM",
+        "categoryId": 8,
+        "category": "RUM",
+        "type": "RUM",
+        "id": 124115,
+        "tag": "External Communication",
+        "groups": ["External Communication"],
+        "enabled": 1,
+        "dataTypeId": 25,
+        "params": {
+            "ignoreQueryParams": "true",
+            "domain": "www.ipsen.co.uk/",
+            "aggType": "median"
+        },
+        "monitorTypeId": 71
+    }
     """
     def __init__(self, response_data: dict):
         self._data = response_data
@@ -64,6 +84,17 @@ class Monitor:
 
 
 class MonitorParams:
+    """
+    Wrap over Monitis' monitor params.
+
+    The wrapped data has the form:
+
+    {
+        "ignoreQueryParams": "true",
+        "domain": "www.ipsen.co.uk/",
+        "aggType": "median"
+    }
+    """
     def __init__(self, response_data: dict):
         self._data = response_data
 
