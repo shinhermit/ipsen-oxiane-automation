@@ -1,4 +1,5 @@
 import typing
+from src import utils
 
 
 class MonitorWrappingIterable:
@@ -91,6 +92,11 @@ class MonitorParams:
 
     @property
     def domain(self) -> str:
+        """The monitored domain"""
+        return utils.substring_after(utils.substring_before(self._data.get("domain"), "/"), "www.")
+
+    @property
+    def url(self) -> str:
         """The monitored domain"""
         return self._data.get("domain")
 

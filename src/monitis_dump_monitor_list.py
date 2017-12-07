@@ -14,7 +14,7 @@ def main():
         for monitor in data_model.MonitorWrappingIterable(res):
             csv_line = '"{domain}","{url}",{id}\r\n'.format(
                 domain=monitor.params.domain,
-                url=monitor.params.domain,
+                url=monitor.params.url,
                 id=monitor.id)
             file.write(csv_line)
 
