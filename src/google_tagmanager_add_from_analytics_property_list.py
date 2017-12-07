@@ -63,7 +63,7 @@ for account in account_list.account:
     if account_exist and account.name not in key_done:
         for prop in account_to_properties[account.name]:
             prop = re.sub(r'(.*://)(www.)?', '', prop)
-            if prop.find('/'):
+            if re.search('/.*', prop):
                 print("%s can't be add due to the /" % prop)
             else:
                 body = {
