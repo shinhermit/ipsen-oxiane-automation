@@ -5,12 +5,16 @@ http://boto3.readthedocs.io/en/latest/reference/services/route53.html#Route53.Cl
 
 import boto3
 import yaml
-import datetime
 from src import settings
 from src.awsapi.data_model import ResourceRecordSetsList
+from src import utils
 
 
 def main():
+    parser = utils.get_output_arg_parser(
+        description="Create a YAML backup for AWS route53",
+        default_output_file=settings.awsapi['route53']['dump_file_path'])
+    args = parser.parse_args()
 
     hosted_zone_list = []
     client = boto3.client('route53')
@@ -22,16 +26,16 @@ def main():
     for zone in hosted_zone_list:
         zone_details = ResourceRecordSetsList(client.list_resource_record_sets(HostedZoneId=zone["id"]))
         print(client.list_resource_record_sets(HostedZoneId=zone["id"]))
-        yaml_dump = {#"AWSTemplateFormatVersion": str(datetime.datetime.now().strftime('%Y-%m-%d')),
-                     "AWSTemplateFormatVersion": '2010-09-09',
-                     "Description": "Backup definition for the "+zone['name']+" zone",
-                     "Resources": {"Zone": {"Type": "AWS::Route53::HostedZone",
-                                            "Properties": {"Name": zone["name"]}},
-                                   "records": {"Type": "AWS::Route53::RecordSetGroup",
-                                               "Properties": {"HostedZoneId": zone["id"],
-                                                              "comment": "Zone record for "+zone['name'],
-                                                              "RecordSets": append_dict(zone_details)}}}}
-        with open(settings.awsapi['route53']['dump_file_path']+zone["name"]+'yml', 'w') as outfile:
+        yaml_dump = {
+            "AWSTemplateFormatVersion": '2010-09-09',
+            "Description": "Backup definition for the "+zone['name']+" zone",
+            "Resources": {"Zone": {"Type": "AWS::Route53::HostedZone",
+                                   "Properties": {"Name": zone["name"]}},
+                          "records": {"Type": "AWS::Route53::RecordSetGroup",
+                                      "Properties": {"HostedZoneId": zone["id"],
+                                                     "comment": "Zone record for "+zone['name'],
+                                                     "RecordSets": append_dict(zone_details)}}}}
+        with open(args.dump_file+zone["name"]+'yml', 'w+') as outfile:
             yaml.dump(yaml_dump, outfile, explicit_start=True, width=1000, default_flow_style=False)
 
 
