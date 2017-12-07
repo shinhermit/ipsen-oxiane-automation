@@ -2,29 +2,6 @@ import typing
 from src import utils
 
 
-class MonitorWrappingIterable:
-    """
-    This iterable allows to iterate over a list of dict
-    representation of monitor entities. For each monitor,
-    it provides a wrapped version to work with.
-    """
-    def __init__(self, response_data: list):
-        self._data = response_data
-        self._iterator = iter(response_data)
-
-    def __iter__(self) -> 'MonitorWrappingIterable':
-        return self
-
-    def __next__(self) -> 'Monitor':
-        return Monitor(next(self._iterator))
-
-    def __getitem__(self, key) -> 'Monitor':
-        return self._data[key]
-
-    def __len__(self) -> int:
-        return len(self._data)
-
-
 class Monitor:
     """
     Represents a monitor as return by Monitis when requesting the
