@@ -24,8 +24,13 @@ class Service:
 
     api_key, secret_key and agent_key can be obtained from the Monitis account under the Tools > API menu.
     """
-    def __init__(self):
-        with open(settings.monitisapi["credentials"]["client_secret_path"], "r") as file:
+    def __init__(self, credentials_file_path):
+        """
+        Allows connecting to the Monitis' API.
+
+        :param credentials_file_path: path to Monitis credentials files.
+        """
+        with open(credentials_file_path, "r") as file:
             secret_credentials = json.loads(file.read())
         self.api_key = secret_credentials["api_key"]
         self.secret_key = secret_credentials["secret_key"]
@@ -136,5 +141,3 @@ class Service:
         search_url = settings.monitisapi["search_url"].format(user_key=self.user_key)
         response = requests.get(search_url)
         return response.json()["searchItems"]["monitors"]
-
-service = Service()

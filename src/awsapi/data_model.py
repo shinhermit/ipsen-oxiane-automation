@@ -4,7 +4,7 @@ from src.common.data_model import GenericWrappingIterator
 class HostedZone:
     """
     This class represents the result of a call to the route53/list_hosted_zones endpoint
-    of boto3 , the API for AWS.
+    of boto3, the API for AWS.
 
     Each of this class' properties exactly maps to one of the JSON from the API response.
 
@@ -14,41 +14,41 @@ class HostedZone:
      The JSON response has the following structure:
 
     {
-    'ResourceRecordSets': [
-        {
-            'Name': 'string',
-            'Type': 'SOA'|'A'|'TXT'|'NS'|'CNAME'|'MX'|'NAPTR'|'PTR'|'SRV'|'SPF'|'AAAA'|'CAA',
-            'SetIdentifier': 'string',
-            'Weight': 123,
-            'Region': 'us-east-1'|'us-east-2'|'us-west-1'|'us-west-2'|'ca-central-1'|'eu-west-1'|'eu-west-2'|'eu-central-1'|'ap-southeast-1'|'ap-southeast-2'|'ap-northeast-1'|'ap-northeast-2'|'sa-east-1'|'cn-north-1'|'ap-south-1',
-            'GeoLocation': {
-                'ContinentCode': 'string',
-                'CountryCode': 'string',
-                'SubdivisionCode': 'string'
-            },
-            'Failover': 'PRIMARY'|'SECONDARY',
-            'MultiValueAnswer': True|False,
-            'TTL': 123,
-            'ResourceRecords': [
-                {
-                    'Value': 'string'
+        'ResourceRecordSets': [
+            {
+                'Name': 'string',
+                'Type': 'SOA'|'A'|'TXT'|'NS'|'CNAME'|'MX'|'NAPTR'|'PTR'|'SRV'|'SPF'|'AAAA'|'CAA',
+                'SetIdentifier': 'string',
+                'Weight': 123,
+                'Region': 'us-east-1'|'us-east-2'|'us-west-1'|'us-west-2'|'ca-central-1'|'eu-west-1'|'eu-west-2'|'eu-central-1'|'ap-southeast-1'|'ap-southeast-2'|'ap-northeast-1'|'ap-northeast-2'|'sa-east-1'|'cn-north-1'|'ap-south-1',
+                'GeoLocation': {
+                    'ContinentCode': 'string',
+                    'CountryCode': 'string',
+                    'SubdivisionCode': 'string'
                 },
-            ],
-            'AliasTarget': {
-                'HostedZoneId': 'string',
-                'DNSName': 'string',
-                'EvaluateTargetHealth': True|False
+                'Failover': 'PRIMARY'|'SECONDARY',
+                'MultiValueAnswer': True|False,
+                'TTL': 123,
+                'ResourceRecords': [
+                    {
+                        'Value': 'string'
+                    },
+                ],
+                'AliasTarget': {
+                    'HostedZoneId': 'string',
+                    'DNSName': 'string',
+                    'EvaluateTargetHealth': True|False
+                },
+                'HealthCheckId': 'string',
+                'TrafficPolicyInstanceId': 'string'
             },
-            'HealthCheckId': 'string',
-            'TrafficPolicyInstanceId': 'string'
-        },
-    ],
-    'IsTruncated': True|False,
-    'NextRecordName': 'string',
-    'NextRecordType': 'SOA'|'A'|'TXT'|'NS'|'CNAME'|'MX'|'NAPTR'|'PTR'|'SRV'|'SPF'|'AAAA'|'CAA',
-    'NextRecordIdentifier': 'string',
-    'MaxItems': 'string'
-}
+        ],
+        'IsTruncated': True|False,
+        'NextRecordName': 'string',
+        'NextRecordType': 'SOA'|'A'|'TXT'|'NS'|'CNAME'|'MX'|'NAPTR'|'PTR'|'SRV'|'SPF'|'AAAA'|'CAA',
+        'NextRecordIdentifier': 'string',
+        'MaxItems': 'string'
+    }
     """
 
     def __init__(self, json_as_dict):
@@ -83,9 +83,18 @@ class HostedZone:
 
 
 class ResourceRecordSets:
+    """
+    This class represent a hosted zone from the list in the ResourceRecordSets section
+     of the result of a call to the route53/list_hosted_zones endpoint of the AWS API.
+
+    Each of this class' properties exactly maps to one of the JSON from the API response.
+
+    API reference page:
+    http://boto3.readthedocs.io/en/latest/reference/services/route53.html#Route53.Client.list_hosted_zones
+    """
     def __init__(self, json_as_dict):
         self.data = json_as_dict
-        self._items_iterator1 = GenericWrappingIterator(self.data.get("ResourceRecords", []), ResourceRecords)
+        self._items_iterator = GenericWrappingIterator(self.data.get("ResourceRecords", []), ResourceRecords)
 
     @property
     def name(self):
@@ -117,13 +126,12 @@ class ResourceRecordSets:
             else:
                 subdivision_code = None
             return GeoLocation(continent_code, country_code, subdivision_code)
-        else:
-            return None
+        return None
 
     @property
     def resource_records(self):
         if self.data.get('ResourceRecords'):
-            return self._items_iterator1
+            return self._items_iterator
         else:
             return None
 
