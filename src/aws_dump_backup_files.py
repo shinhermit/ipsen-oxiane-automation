@@ -1,8 +1,7 @@
 """
 http://boto3.readthedocs.io/en/latest/reference/services/route53.html#Route53.Client.list_hosted_zones
 """
-
-
+from typing import List
 import boto3
 import yaml
 from src.awsapi.data_model import ResourceRecordSetList
@@ -44,7 +43,23 @@ def main():
             yaml.dump(cloud_formation_template_dict, outfile, explicit_start=True, width=1000, default_flow_style=False)
 
 
-def get_resource_record_set_cloud_formation_dict_list(hosted_zone):
+def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecordSetList) -> List[dict]:
+    """
+    Provide a dict representation of a resource record set that can
+    be used to dump a cloud formation formatted YAML file.
+
+    :return: a dict in the form:
+        {
+            "Name": str,
+            "Type": str,
+            "TTL": str,
+            "ResourceRecord": [str],
+            "AliasTarget": {
+                "DNSName": str,
+                "HostedZoneId": str
+            }
+        }
+    """
     resource_record_set_cloud_formation_dict_list = []
     for resource_record_set in hosted_zone.resource_record_sets:
         resource_record_values = [resource_record.value
