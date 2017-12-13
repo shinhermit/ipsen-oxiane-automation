@@ -1,9 +1,10 @@
-import requests
 import datetime
 import json
 from typing import List
 
-from src import settings
+import requests
+
+import settings
 
 
 class Service:

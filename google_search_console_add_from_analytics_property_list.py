@@ -2,12 +2,14 @@
 This script creates properties in Google Search Console based on
 properties declared in Google Analytics
 """
+import csv
+
 from googleapiclient.http import BatchHttpRequest
 from oauth2client import tools
-from src import settings
-from src.googleapi.api_connector import get_service
-from src import utils
-import csv
+
+import settings
+from webapis import utils
+from webapis.googleapi.api_connector import get_service
 
 
 def main():

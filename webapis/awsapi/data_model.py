@@ -1,4 +1,4 @@
-from src.common.data_model import GenericWrappingIterator
+from webapis.common.data_model import GenericWrappingIterator
 from typing import NamedTuple
 
 

@@ -4,8 +4,8 @@ http://boto3.readthedocs.io/en/latest/reference/services/route53.html#Route53.Cl
 from typing import List
 import boto3
 import yaml
-from src.awsapi.data_model import ResourceRecordSetList
-from src import utils
+from webapis.awsapi.data_model import ResourceRecordSetList
+from webapis import utils
 
 
 def main():
@@ -33,7 +33,7 @@ def main():
                     "Type": "AWS::Route53::RecordSetGroup",
                     "Properties": {
                         "HostedZoneId": zone_id,
-                        "comment": "Zone record for " + zone_name,
+                        "Comment": "Zone record for " + zone_name,
                         "RecordSets": get_resource_record_set_cloud_formation_dict_list(zone_details)
                     }
                 }

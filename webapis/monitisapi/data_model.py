@@ -1,5 +1,5 @@
 import typing
-from src import utils
+from webapis import utils
 
 
 class Monitor:

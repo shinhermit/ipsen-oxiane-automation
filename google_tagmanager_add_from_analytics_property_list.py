@@ -6,13 +6,14 @@ For the containers : https://developers.google.com/tag-manager/api/v2/reference/
 
 import csv
 import re
-from oauth2client import tools
-from src import settings
-from src.googleapi.api_connector import get_service
-from googleapiclient.http import BatchHttpRequest
-from src.googleapi.tagmanagerapi.data_model import AccountsList
-from src import utils
 
+from googleapiclient.http import BatchHttpRequest
+from oauth2client import tools
+
+import settings
+from webapis import utils
+from webapis.googleapi.api_connector import get_service
+from webapis.googleapi.tagmanagerapi.data_model import AccountsList
 
 parser = utils.get_input_arg_parser(description="Add tags in google tag manager base on a "
                                                 "list of google analytics properties from a CSV file.",

@@ -3,9 +3,9 @@ This script creates all the monitors for each properties
 given in a csv file on the Monitis Application
 """
 
-from src.monitisapi import api_connector
+from webapis.monitisapi import api_connector
 import csv
-from src import utils
+from webapis import utils
 
 
 def main():

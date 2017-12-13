@@ -1,7 +1,7 @@
-from src.monitisapi import api_connector
-from src.monitisapi.data_model import Monitor
-from src.common.data_model import GenericWrappingIterator
-from src import utils
+from webapis.monitisapi import api_connector
+from webapis.monitisapi.data_model import Monitor
+from webapis.common.data_model import GenericWrappingIterator
+from webapis import utils
 
 
 def main():

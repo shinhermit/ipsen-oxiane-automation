@@ -4,11 +4,13 @@ from a given Google Analytics Account
 """
 import csv
 import re
+
 from oauth2client import tools
-from src import settings
-from src.googleapi.api_connector import get_service
-from src.googleapi.analyticss.data_model import AccountSummaryList
-from src import utils
+
+import settings
+from webapis import utils
+from webapis.googleapi.analyticss.data_model import AccountSummaryList
+from webapis.googleapi.api_connector import get_service
 
 
 def main():

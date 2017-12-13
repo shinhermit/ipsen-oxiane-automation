@@ -1,9 +1,9 @@
 from oauth2client import tools
-from src import settings
-from src.googleapi.api_connector import get_service
-from src.googleapi.tagmanagerapi.data_model import AccountsList, ContainersList
-from src import utils
 
+import settings
+from webapis import utils
+from webapis.googleapi.api_connector import get_service
+from webapis.googleapi.tagmanagerapi.data_model import AccountsList, ContainersList
 
 parser = utils.get_input_arg_parser(description="Add tags in google tag manager base on a "
                                                 "list of google analytics properties from a CSV file.",

@@ -1,6 +1,6 @@
 from typing import List
 
-from src.common.data_model import GenericWrappingIterator
+from webapis.common.data_model import GenericWrappingIterator
 
 
 class AccountsList:
