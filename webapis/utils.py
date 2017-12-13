@@ -78,3 +78,14 @@ def get_domain_name_from_url(url: str) -> str:
     """
     wo_url = substring_after(substring_after(url, "http://"), "www.")
     return substring_before(wo_url, "/")
+
+
+class cli_col:
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    END_COL = '\033[0m'

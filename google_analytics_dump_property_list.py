@@ -10,6 +10,7 @@ import settings
 from webapis import utils
 from webapis.googleapi.analyticss.data_model import AccountSummaryList
 from webapis.googleapi.api_connector import get_service
+from webapis.utils import cli_col
 
 
 welcome_msg = """
@@ -64,7 +65,8 @@ def main():
                     report_total_properties_count += 1
                     print("\tProperty Name: %s, URL: %s\n\t\t ++ \tDone" % (web_property.name, url))
                 else:
-                    print("\tProperty Name: %s, URL: %s\n\t\t ++ \tSkipped" % (web_property.name, url))
+                    print(("\tProperty Name: %s, URL: %s\n\t\t ++ \t" +
+                          cli_col.YELLOW+"Skipped"+cli_col.END_COL) % (web_property.name, url))
             print("\n\t****** Processed %d propertie(s) for this account" % report_properties_count)
             report_total_accounts_count += 1
     print("\nProcessed %d account(s) and %d propertie(s) in total." % (report_total_accounts_count,
