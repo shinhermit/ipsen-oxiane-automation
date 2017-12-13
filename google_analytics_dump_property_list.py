@@ -36,7 +36,8 @@ def main():
                 wo_url = re.sub(r'(.*//www.|.*//)', '', web_property.website_url)
                 wo_url = re.sub(r'/.*', '', wo_url)
                 print("Currently in \"%s\" Account, in the \"%s\" Property" % (account.name, web_property.name))
-                wr.writerow((account.id, account.name, web_property.id, web_property.website_url, wo_url))
+                if web_property.website_url:
+                    wr.writerow((account.id, account.name, web_property.id, web_property.website_url, wo_url))
 
 
 if __name__ == "__main__":
