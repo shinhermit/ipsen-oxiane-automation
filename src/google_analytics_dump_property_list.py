@@ -4,6 +4,7 @@ from a given Google Analytics Account
 """
 import csv
 import re
+from oauth2client import tools
 from src import settings
 from src.googleapi.api_connector import get_service
 from src.googleapi.analyticss.data_model import AccountSummaryList
@@ -11,14 +12,16 @@ from src import utils
 
 
 def main():
-    parser = utils.get_output_arg_parser(description="Dump the list of all Google Analytics properties.")
+    parser = utils.get_output_arg_parser(description="Dump the list of all Google Analytics properties.",
+                                         parents=[tools.argparser])
     args = parser.parse_args()
 
     analytics_settings = settings.googleapi["analytics"]
     api_analytics = get_service(api_name=analytics_settings["api_name"],
                                 api_version=analytics_settings['api_version'],
                                 client_secrets_path=args.credentials,
-                                scope=analytics_settings['scopes'])
+                                scope=analytics_settings['scopes'],
+                                flags=args)
 
     account_summaries = api_analytics.management().accountSummaries().list().execute(num_retries=10)
     acc_list = AccountSummaryList(account_summaries)

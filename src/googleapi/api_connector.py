@@ -16,6 +16,7 @@
 # limitations under the License.
 import httplib2
 import os
+import argparse
 import googleapiclient.discovery
 from typing import List
 from oauth2client import client
@@ -32,24 +33,26 @@ def create_oauth_flow(client_secrets_path: str, scope: List[str]) -> client.Flow
                                           message=tools.message_if_missing(client_secrets_path))
 
 
-def get_authorized_http_object(credentials_base_path: str, api_name: str, flow: client.Flow) -> httplib2.Http:
+def get_authorized_http_object(credentials_base_path: str, api_name: str,
+                               flow: client.Flow, flags: argparse.Namespace) -> httplib2.Http:
     """
     Create an OAuth authorized http object.
 
     :param credentials_base_path: directory where the credentials file will be created.
     :param api_name: name of the api. It will be used as the name of the credentials file
     :param flow: the OAuth flow object to use to create credentials
+    :param flags: parsed CLI args (including google api args)
     :return: authorize http object
     """
     storage = file.Storage(credentials_base_path + api_name + '.dat')
     credentials = storage.get()
     if credentials is None or credentials.invalid:
-        credentials = tools.run_flow(flow, storage)
+        credentials = tools.run_flow(flow, storage, flags=flags)
     return credentials.authorize(http=httplib2.Http())
 
 
-def get_service(api_name: str, api_version: str, scope: List[str], client_secrets_path: str)\
-        -> googleapiclient.discovery.Resource:
+def get_service(api_name: str, api_version: str, scope: List[str],
+                client_secrets_path: str, flags: argparse.Namespace) -> googleapiclient.discovery.Resource:
     """
     Get a service that communicates to a Google API.
 
@@ -58,9 +61,10 @@ def get_service(api_name: str, api_version: str, scope: List[str], client_secret
     :param scope: A list of strings representing the auth
     scopes to authorize for the connection.
     :param client_secrets_path: A path to a valid client secrets file.
+    :param flags: parsed CLI args (including google api args)
     :return: A service that is connected to the specified API.
     """
     credentials_base_path = os.path.dirname(os.path.abspath(client_secrets_path)) + "/"
     flow = create_oauth_flow(client_secrets_path, scope)
-    http = get_authorized_http_object(credentials_base_path, api_name, flow)
+    http = get_authorized_http_object(credentials_base_path, api_name, flow, flags)
     return googleapiclient.discovery.build(api_name, api_version, http=http)

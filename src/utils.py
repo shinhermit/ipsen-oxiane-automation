@@ -1,8 +1,8 @@
 import argparse
 
 
-def get_output_arg_parser(description="", default_credentials="", default_output_file=""):
-    parser = argparse.ArgumentParser(description=description)
+def get_output_arg_parser(description="", default_credentials="", default_output_file="", parents=[]):
+    parser = argparse.ArgumentParser(description=description, parents=parents)
     parser.add_argument('--credentials', dest="credentials",
                         default=default_credentials,
                         help='path to the credentials file to use to authenticate over the API.')
@@ -12,8 +12,8 @@ def get_output_arg_parser(description="", default_credentials="", default_output
     return parser
 
 
-def get_input_arg_parser(description="", default_credentials="", default_input_file=""):
-    parser = argparse.ArgumentParser(description=description)
+def get_input_arg_parser(description="", default_credentials="", default_input_file="", parents=None):
+    parser = argparse.ArgumentParser(description=description, parents=parents)
     parser.add_argument('--credentials', dest="credentials",
                         default=default_credentials,
                         help='path to the credentials file to use to authenticate over the API.')
