@@ -1,7 +1,7 @@
 import argparse
 
 
-def get_output_arg_parser(description="", default_credentials="", default_output_file="", parents=[]):
+def get_output_arg_parser(description="", default_credentials="", default_output_file="", parents=()):
     parser = argparse.ArgumentParser(description=description, parents=parents)
     parser.add_argument('--credentials', dest="credentials",
                         default=default_credentials,
