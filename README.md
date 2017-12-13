@@ -127,7 +127,7 @@ Add monitors in Monitis from a list of properties previously dumped from
 Google Analytics.
 
 ```bash
-etc/PYTHONPATH="$PYTHONPATH:$PWD" etc/bin/venv/bin/python src/monitis_add_monitor_from_GA_property_list.py \
+PYTHONPATH="$PYTHONPATH:$PWD" etc/bin/venv/bin/python src/monitis_add_monitor_from_GA_property_list.py \
             --credentials etc/credentials/monitisapi/secret_credentials.json \
             --input etc/dump/GA_property_list.csv
 ```
