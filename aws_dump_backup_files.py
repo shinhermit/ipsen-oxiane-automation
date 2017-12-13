@@ -19,11 +19,12 @@ def main():
     request_result = client.list_hosted_zones()
     next_marker = None
     cpt = 0
-    if request_result['IsTruncated']:
-        pp.pprint(request_result.get('NextMarker'))
-        next_marker = request_result.get('NextMarker')
+    not_truncated = not request_result.get("IsTruncated")
+    # if request_result['IsTruncated']:
+    #     pp.pprint(request_result.get('NextMarker'))
+    #     next_marker = request_result.get('NextMarker')
 
-    while True:
+    while not_truncated or request_result.get('NextMarker'):
         cpt += 1
         print(next_marker)
         for hosted_zone in request_result['HostedZones']:
