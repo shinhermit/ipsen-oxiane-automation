@@ -17,14 +17,14 @@ def main():
 
     client = boto3.client('route53')
     request_result = client.list_hosted_zones()
-    next_marker = None
     cpt = 0
     not_truncated = not request_result.get("IsTruncated")
+    next_marker = request_result.get('NextMarker')
     # if request_result['IsTruncated']:
     #     pp.pprint(request_result.get('NextMarker'))
     #     next_marker = request_result.get('NextMarker')
 
-    while not_truncated or request_result.get('NextMarker'):
+    while not_truncated or next_marker:
         cpt += 1
         print(next_marker)
         for hosted_zone in request_result['HostedZones']:
@@ -53,8 +53,6 @@ def main():
             }
             with open(args.dump_file + zone_name + 'yml', 'w+') as outfile:
                 yaml.dump(cloud_formation_template_dict, outfile, explicit_start=True, width=1000, default_flow_style=False)
-        if not next_marker:
-            break
         request_result = client.list_hosted_zones(Marker=next_marker)
         next_marker = request_result.get('NextMarker')
 
