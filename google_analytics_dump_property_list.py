@@ -57,11 +57,14 @@ def main():
             report_properties_count = 0
             for web_property in account.web_properties:
                 url = web_property.website_url
-                wo_url = utils.get_domain_name_from_url(url)
-                wr.writerow((account.id, account.name, web_property.id, url, wo_url))
-                report_properties_count += 1
-                report_total_properties_count += 1
-                print("\tProperty Name: %s, URL: %s\n\t\t ++ \tDone" % (web_property.name, url))
+                if url:
+                    wo_url = utils.get_domain_name_from_url(url)
+                    wr.writerow((account.id, account.name, web_property.id, url, wo_url))
+                    report_properties_count += 1
+                    report_total_properties_count += 1
+                    print("\tProperty Name: %s, URL: %s\n\t\t ++ \tDone" % (web_property.name, url))
+                else:
+                    print("\tProperty Name: %s, URL: %s\n\t\t ++ \tSkipped" % (web_property.name, url))
             print("\n\t****** Processed %d propertie(s) for this account" % report_properties_count)
             report_total_accounts_count += 1
     print("\nProcessed %d account(s) and %d propertie(s) in total." % (report_total_accounts_count,

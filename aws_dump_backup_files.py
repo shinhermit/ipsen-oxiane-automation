@@ -6,42 +6,58 @@ import boto3
 import yaml
 from webapis.awsapi.data_model import ResourceRecordSetList
 from webapis import utils
+import pprint
 
 
 def main():
+    pp = pprint.PrettyPrinter()
     parser = utils.get_output_arg_parser(description="Create a YAML backup for AWS route53",
                                          require_credentials=False)
     args = parser.parse_args()
 
     client = boto3.client('route53')
     request_result = client.list_hosted_zones()
+    next_marker = None
+    cpt = 0
+    if request_result['IsTruncated']:
+        pp.pprint(request_result.get('NextMarker'))
+        next_marker = request_result.get('NextMarker')
 
-    for hosted_zone in request_result['HostedZones']:
-        zone_id = hosted_zone["Id"].split('/')[2]
-        zone_name = hosted_zone["Name"]
-        zone_details = ResourceRecordSetList(client.list_resource_record_sets(HostedZoneId=zone_id))
-        cloud_formation_template_dict = {
-            "AWSTemplateFormatVersion": '2010-09-09',
-            "Description": "Backup definition for the " + zone_name + " zone",
-            "Resources": {
-                "Zone": {
-                    "Type": "AWS::Route53::HostedZone",
-                    "Properties": {
-                        "Name": zone_name
-                    }
-                },
-                "records": {
-                    "Type": "AWS::Route53::RecordSetGroup",
-                    "Properties": {
-                        "HostedZoneId": zone_id,
-                        "Comment": "Zone record for " + zone_name,
-                        "RecordSets": get_resource_record_set_cloud_formation_dict_list(zone_details)
+    while True:
+        cpt += 1
+        print(next_marker)
+        for hosted_zone in request_result['HostedZones']:
+            zone_id = hosted_zone["Id"].split('/')[2]
+            zone_name = hosted_zone["Name"]
+            zone_details = ResourceRecordSetList(client.list_resource_record_sets(HostedZoneId=zone_id))
+            cloud_formation_template_dict = {
+                "AWSTemplateFormatVersion": '2010-09-09',
+                "Description": "Backup definition for the " + zone_name + " zone",
+                "Resources": {
+                    "Zone": {
+                        "Type": "AWS::Route53::HostedZone",
+                        "Properties": {
+                            "Name": zone_name
+                        }
+                    },
+                    "records": {
+                        "Type": "AWS::Route53::RecordSetGroup",
+                        "Properties": {
+                            "HostedZoneId": zone_id,
+                            "Comment": "Zone record for " + zone_name,
+                            "RecordSets": get_resource_record_set_cloud_formation_dict_list(zone_details)
+                        }
                     }
                 }
             }
-        }
-        with open(args.dump_file + zone_name + 'yml', 'w+') as outfile:
-            yaml.dump(cloud_formation_template_dict, outfile, explicit_start=True, width=1000, default_flow_style=False)
+            with open(args.dump_file + zone_name + 'yml', 'w+') as outfile:
+                yaml.dump(cloud_formation_template_dict, outfile, explicit_start=True, width=1000, default_flow_style=False)
+        if not next_marker:
+            break
+        request_result = client.list_hosted_zones(Marker=next_marker)
+        next_marker = request_result.get('NextMarker')
+
+    print(cpt)
 
 
 def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecordSetList) -> List[dict]:
