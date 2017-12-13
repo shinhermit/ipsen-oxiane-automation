@@ -110,7 +110,8 @@ def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecor
         if not_truncated:
             continue_loop = False
         else:
-            hosted_zone = ResourceRecordSetList(client.list_resource_record_sets(HostedZoneId=zone_id,StartRecorName=next_record))
+            hosted_zone = ResourceRecordSetList(client.list_resource_record_sets(HostedZoneId=zone_id,
+                                                                                 StartRecorName=next_record))
             next_record = hosted_zone.next_record_name
             continue_loop = next_record is not None
     return resource_record_set_cloud_formation_dict_list
