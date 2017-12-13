@@ -87,7 +87,7 @@ you created.
 Dump the list of all Google Analytics properties in a CSV file. Example:
 
 ```bash
-PYTHONPATH="$PYTHONPATH:$PWD" etc/bin/venv/bin/python src/google_analytics_dump_property_list.py \
+etc/bin/venv/bin/python google_analytics_dump_property_list.py \
             --credentials etc/credentials/googleapi/client_secret.json \
             --output etc/dump/GA_property_list.csv
 ```
@@ -105,7 +105,7 @@ Add sites in Google Search Console from a list of properties previously dumped f
 Google Analytics.
 
 ```bash
-PYTHONPATH="$PYTHONPATH:$PWD" etc/bin/venv/bin/python src/google_search_console_add_from_analytics_property_list.py \
+etc/bin/venv/bin/python google_search_console_add_from_analytics_property_list.py \
             --credentials etc/credentials/googleapi/client_secret.json \
             --input etc/dump/GA_property_list.csv
 ```
@@ -116,7 +116,7 @@ Add tags in Google Tag Manager from a list of properties previously dumped from
 Google Analytics.
 
 ```bash
-PYTHONPATH="$PYTHONPATH:$PWD" etc/bin/venv/bin/python src/google_tagmanager_add_from_analytics_property_list.py \
+etc/bin/venv/bin/python google_tagmanager_add_from_analytics_property_list.py \
             --credentials etc/credentials/googleapi/client_secret.json \
             --input etc/dump/GA_property_list.csv
 ```
@@ -127,7 +127,7 @@ Add monitors in Monitis from a list of properties previously dumped from
 Google Analytics.
 
 ```bash
-PYTHONPATH="$PYTHONPATH:$PWD" etc/bin/venv/bin/python src/monitis_add_monitor_from_GA_property_list.py \
+etc/bin/venv/bin/python monitis_add_monitor_from_GA_property_list.py \
             --credentials etc/credentials/monitisapi/secret_credentials.json \
             --input etc/dump/GA_property_list.csv
 ```
@@ -137,7 +137,7 @@ PYTHONPATH="$PYTHONPATH:$PWD" etc/bin/venv/bin/python src/monitis_add_monitor_fr
 Dum the list of all Monitis' monitors in a CSV file.
 
 ```bash
-PYTHONPATH="$PYTHONPATH:$PWD" etc/bin/venv/bin/python src/monitis_dump_monitor_list.py \
+etc/bin/venv/bin/python monitis_dump_monitor_list.py \
             --credentials etc/credentials/monitisapi/secret_credentials.json \
             --output etc/dump/monitis_rum_monitors.csv
 ```
@@ -156,6 +156,7 @@ Dump a YAML backup file for the AWS Route53 hosted zones.
 Don't forget the ending '/' if you specify a folder
 
 ```bash
-PYTHONPATH="$PYTHONPATH:$PWD" etc/bin/venv/bin/python src/aws_dump_backup_files.py \
+etc/bin/venv/bin/python aws_dump_backup_files.py \
+            --credentials "" \
             --output etc/dump/aws_backup_files/
 ```
