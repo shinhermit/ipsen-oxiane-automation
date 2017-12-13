@@ -64,3 +64,17 @@ def substring_after(initial_str: str, sub: str) -> str:
     if len(parts) > 1:
         return parts[1]
     return parts[0]
+
+
+def get_domain_name_from_url(url: str) -> str:
+    """
+    Extract the domain name from an URL.
+
+    Given an URL in the form http://www.ipsen.com/fr/,
+    returns ipsen.com
+
+    :param url: the URL from wich we want to extract a domain name
+    :return: the domain name extracted from the URL
+    """
+    wo_url = substring_after(substring_after(url, "http://"), "www.")
+    return substring_before(wo_url, "/")
