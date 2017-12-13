@@ -1,11 +1,11 @@
 import argparse
 
 
-def get_output_arg_parser(description="", parents=()):
+def get_output_arg_parser(description="", require_credentials=True, parents=()):
     parser = argparse.ArgumentParser(description=description, parents=parents)
     parser.add_argument('--credentials',
                         dest="credentials",
-                        required=True,
+                        required=require_credentials,
                         help='path to the credentials file to use to authenticate over the API.')
     parser.add_argument('--output',
                         dest="dump_file",
@@ -14,11 +14,11 @@ def get_output_arg_parser(description="", parents=()):
     return parser
 
 
-def get_input_arg_parser(description="", parents=None):
+def get_input_arg_parser(description="", require_credentials=True, parents=()):
     parser = argparse.ArgumentParser(description=description, parents=parents)
     parser.add_argument('--credentials',
                         dest="credentials",
-                        required=True,
+                        required=require_credentials,
                         help='path to the credentials file to use to authenticate over the API.')
     parser.add_argument('--input',
                         dest="input_file",

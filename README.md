@@ -157,6 +157,5 @@ Don't forget the ending '/' if you specify a folder
 
 ```bash
 etc/bin/venv/bin/python aws_dump_backup_files.py \
-            --credentials "" \
             --output etc/dump/aws_backup_files/
 ```
