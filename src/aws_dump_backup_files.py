@@ -9,7 +9,7 @@ from src import utils
 
 
 def main():
-    parser = utils.get_output_arg_parser(description="Create a YAML backup for AWS route53",)
+    parser = utils.get_output_arg_parser(description="Create a YAML backup for AWS route53")
     args = parser.parse_args()
 
     client = boto3.client('route53')

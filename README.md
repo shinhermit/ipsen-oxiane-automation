@@ -88,7 +88,7 @@ Dump the list of all Google Analytics properties in a CSV file. Example:
 
 ```bash
 etc/bin/venv/bin/python google_analytics_dump_property_list.py \
-            --credentials etc/credentials/googleapi/client_secret.json
+            --credentials etc/credentials/googleapi/client_secret.json \
             --output etc/dump/GA_property_list.csv
 ```
 
@@ -106,7 +106,7 @@ Google Analytics.
 
 ```bash
 etc/bin/venv/bin/python google_search_console_add_from_analytics_property_list.py \
-            --credentials etc/credentials/googleapi/client_secret.json
+            --credentials etc/credentials/googleapi/client_secret.json \
             --input etc/dump/GA_property_list.csv
 ```
 
@@ -117,7 +117,7 @@ Google Analytics.
 
 ```bash
 etc/bin/venv/bin/python google_tagmanager_add_from_analytics_property_list.py \
-            --credentials etc/credentials/googleapi/client_secret.json
+            --credentials etc/credentials/googleapi/client_secret.json \
             --input etc/dump/GA_property_list.csv
 ```
 
@@ -128,7 +128,7 @@ Google Analytics.
 
 ```bash
 etc/bin/venv/bin/python monitis_add_monitor_from_GA_property_list.py \
-            --credentials etc/credentials/monitisapi/secret_credentials.json
+            --credentials etc/credentials/monitisapi/secret_credentials.json \
             --input etc/dump/GA_property_list.csv
 ```
 
@@ -138,7 +138,7 @@ Dum the list of all Monitis' monitors in a CSV file.
 
 ```bash
 etc/bin/venv/bin/python monitis_dump_monitor_list.py \
-            --credentials etc/credentials/monitisapi/secret_credentials.json
+            --credentials etc/credentials/monitisapi/secret_credentials.json \
             --output etc/dump/monitis_rum_monitors.csv
 ```
 
