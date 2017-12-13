@@ -9,10 +9,22 @@ from oauth2client import tools
 
 import settings
 from webapis import utils
+from webapis.utils import cli_col
 from webapis.googleapi.api_connector import get_service
 
 
+welcome_msg = """
+-------------------------------------------------------------------------------------------------
+**                                                                                             **
+**                            GOOGLE SEARCH CONSOLE SYNC                                       **
+**                                                                                             **
+**    Synchronize Google Search Console sites on Analytics properties from a CSV file          **
+-------------------------------------------------------------------------------------------------
+"""
+
+
 def main():
+    print(cli_col.HEADER + welcome_msg + cli_col.END_COL)
     parser = utils.get_input_arg_parser(description="Add sites in google search console base on a "
                                                     "list of google analytics properties from a CSV file.",
                                         parents=[tools.argparser])
@@ -28,12 +40,16 @@ def main():
     batch = BatchHttpRequest()
     with open(args.input_file, 'r') as csv_file:
         reader = csv.DictReader(csv_file)
+        print("Preparing batch request:")
+        sites_count = 0
         for row in reader:
             website_url = row["Properties"]
-            account = row["Account"]
-            print("Currently in the %s Account, adding %s to Google Search Console" % (account, website_url))
             batch.add(api_search_console.sites().add(siteUrl=website_url))
+            sites_count += 1
+            print("\t** Analytics account: %s, Site URL: %s" % (row["Account"], website_url))
+    print((cli_col.GREEN + "\nAdded %d site to batch request" + cli_col.END_COL) % sites_count)
     batch.execute()
+    print(cli_col.HEADER + utils.goodbye_msg + cli_col.END_COL)
 
 
 if __name__ == "__main__":

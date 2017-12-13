@@ -22,17 +22,9 @@ welcome_msg = """
 -------------------------------------------------------------------------------------------------
 """
 
-goodbye_msg = """
--------------------------------------------------------------------------------------------------
-**                                                                                             **
-**                                      Good bye                                               **
-**                                                                                             **
--------------------------------------------------------------------------------------------------
-"""
-
 
 def main():
-    print(welcome_msg)
+    print(cli_col.HEADER + welcome_msg + cli_col.END_COL)
     parser = utils.get_output_arg_parser(description="Dump the list of all Google Analytics properties.",
                                          parents=[tools.argparser])
     args = parser.parse_args()
@@ -69,9 +61,9 @@ def main():
                           cli_col.YELLOW+"Skipped"+cli_col.END_COL) % (web_property.name, url))
             print("\n\t****** Processed %d propertie(s) for this account" % report_properties_count)
             report_total_accounts_count += 1
-    print("\nProcessed %d account(s) and %d propertie(s) in total." % (report_total_accounts_count,
-                                                                       report_total_properties_count))
-    print(goodbye_msg)
+    print((cli_col.GREEN + "\nProcessed %d account(s) and %d propertie(s) in total." + cli_col.END_COL)
+          % (report_total_accounts_count, report_total_properties_count))
+    print(cli_col.HEADER + utils.goodbye_msg + cli_col.END_COL)
 
 
 if __name__ == "__main__":
