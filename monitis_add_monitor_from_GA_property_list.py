@@ -6,7 +6,7 @@ given in a csv file on the Monitis Application
 from webapis.monitisapi import api_connector
 import csv
 from webapis import utils
-from webapis.utils import cli_col
+from webapis.utils import console
 
 
 welcome_msg = """
@@ -49,7 +49,7 @@ def main():
             --input etc/dump/GA_property_list.csv
     ```
     """
-    cli_col.print_header(welcome_msg)
+    console.print_header(welcome_msg)
     parser = utils.get_input_arg_parser(description="Add monitors in Monitis from a list of properties "
                                                     "previously dumped from Google Analytics.")
     args = parser.parse_args()
@@ -88,7 +88,7 @@ def load_analytics_properties(csv_file: str) -> dict:
             account = row['Account']
             monitors_dict[monitor_name] = {"url": url, "account": account}
             print("\t**** ", monitor_name, ", ", url, ", ", account)
-    cli_col.print_green("\n%d CSV lines loaded\n" % csv_lines_count)
+    console.print_green("\n%d CSV lines loaded\n" % csv_lines_count)
     return monitors_dict
 
 
@@ -112,14 +112,14 @@ def add_monitors_via_api(monitors_dict: dict, api_credentials_file_path):
         json_response = response.json()
         if response.status_code >= 300 or json_response.get("error"):
             errors_count += 1
-            cli_col.print_red("\t" + str(json_response) + "\t"
+            console.print_red("\t" + str(json_response) + "\t"
                               + monitor_name + ", " + domain_name + ", " + account)
         else:
             processed_properties_count += 1
             print("\t**** ", monitor_name, ", ", domain_name, ", ", account)
-    cli_col.print_green("%d monitors added." % processed_properties_count)
-    cli_col.print_red("%d errors." % errors_count)
-    cli_col.print_good_bye_message()
+    console.print_green("%d monitors added." % processed_properties_count)
+    console.print_red("%d errors." % errors_count)
+    console.print_good_bye_message()
 
 
 if __name__ == "__main__":

@@ -13,7 +13,7 @@ import settings
 from webapis import utils
 from webapis.googleapi.api_connector import get_service
 from webapis.googleapi.tagmanagerapi.data_model import AccountsList
-from webapis.utils import cli_col
+from webapis.utils import Console
 
 welcome_msg = """
 -------------------------------------------------------------------------------------------------
@@ -44,8 +44,7 @@ def main():
             --input etc/dump/GA_property_list.csv
     ```
     """
-
-    print(cli_col.HEADER + welcome_msg + cli_col.END_COL)
+    Console.print_header(welcome_msg)
     parser = utils.get_input_arg_parser(description="Add tags in google tag manager base on a "
                                                     "list of google analytics properties from a CSV file.",
                                         parents=[tools.argparser])
@@ -98,15 +97,14 @@ def main():
         else:
             print("\nThe Account %s doesn't exist" % account_name)
     batch.execute()
-    print((cli_col.GREEN + "\nProcessed %d account(s) and %d Container(s) in total." + cli_col.END_COL)
-          % (report_total_accounts_count, report_total_containers_count))
+    Console.print_green("\nProcessed ", report_total_accounts_count,
+                        " account(s) and ", report_total_containers_count, " Container(s) in total.")
 
     for missing_account in analytics_account_properties_dict.keys():
-        print((cli_col.RED
-              + "\nThe account %s is missing, please create it manually if you want to add some containers to it"
-              + cli_col.END_COL)
-              % missing_account)
-    print(cli_col.HEADER + utils.goodbye_msg + cli_col.END_COL)
+        Console.print_red("\nThe account ", missing_account,
+                          " is missing, please create it manually if you want "
+                          "to add some containers to it")
+    Console.print_good_bye_message()
 
 
 def get_analytics_account_properties_dict_from_csv(csv_file_path: str) -> dict:

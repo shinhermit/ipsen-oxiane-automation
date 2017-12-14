@@ -9,7 +9,7 @@ from oauth2client import tools
 
 import settings
 from webapis import utils
-from webapis.utils import cli_col
+from webapis.utils import Console
 from webapis.googleapi.api_connector import get_service
 
 
@@ -43,7 +43,7 @@ def main():
             --input etc/dump/GA_property_list.csv
     ```
     """
-    print(cli_col.HEADER + welcome_msg + cli_col.END_COL)
+    Console.print_header(welcome_msg)
     parser = utils.get_input_arg_parser(description="Add sites in google search console base on a "
                                                     "list of google analytics properties from a CSV file.",
                                         parents=[tools.argparser])
@@ -66,9 +66,9 @@ def main():
             batch.add(api_search_console.sites().add(siteUrl=website_url))
             sites_count += 1
             print("\t** Analytics account: %s, Site URL: %s" % (row["Account"], website_url))
-    print((cli_col.GREEN + "\nAdded %d site to batch request" + cli_col.END_COL) % sites_count)
+    Console.print_green("\n", sites_count, " sites added to batch request")
     batch.execute()
-    print(cli_col.HEADER + utils.goodbye_msg + cli_col.END_COL)
+    Console.print_good_bye_message()
 
 
 if __name__ == "__main__":

@@ -10,7 +10,7 @@ import settings
 from webapis import utils
 from webapis.googleapi.analyticss.data_model import AccountSummaryList
 from webapis.googleapi.api_connector import get_service
-from webapis.utils import cli_col
+from webapis.utils import Console
 
 
 welcome_msg = """
@@ -41,7 +41,7 @@ def main():
             --output etc/dump/GA_property_list.csv
     ```
     """
-    cli_col.print_header(welcome_msg)
+    Console.print_header(welcome_msg)
     parser = utils.get_output_arg_parser(description="Dump the list of all Google Analytics properties.",
                                          parents=[tools.argparser])
     args = parser.parse_args()
@@ -75,12 +75,12 @@ def main():
                     print("\tProperty Name: %s, URL: %s\n\t\t ++ \tDone" % (web_property.name, url))
                 else:
                     print("\tProperty Name: %s, URL: %s" % (web_property.name, url))
-                    cli_col.print_yellow("\t\t ++ \tSkipped")
+                    Console.print_yellow("\t\t ++ \tSkipped")
             print("\n\t****** Processed %d propertie(s) for this account" % report_properties_count)
             report_total_accounts_count += 1
-    cli_col.print_green("\nProcessed ", report_total_accounts_count, " account(s) and ",
+    Console.print_green("\nProcessed ", report_total_accounts_count, " account(s) and ",
                         report_total_properties_count, " propertie(s) in total.")
-    cli_col.print_good_bye_message()
+    Console.print_good_bye_message()
 
 
 if __name__ == "__main__":

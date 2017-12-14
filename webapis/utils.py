@@ -81,7 +81,7 @@ def get_domain_name_from_url(url: str) -> str:
     return substring_before(wo_url, "/")
 
 
-class cli_col:
+class Console:
     HEADER = '\033[95m'
     BLUE = '\033[94m'
     GREEN = '\033[92m'
@@ -93,23 +93,23 @@ class cli_col:
 
     @staticmethod
     def print_header(*msg: str):
-        print(cli_col.HEADER, *msg, cli_col.END_COL)
+        print(Console.HEADER, *msg, Console.END_COL)
 
     @staticmethod
     def print_yellow(*msg: str):
-        print(cli_col.YELLOW, *msg, cli_col.END_COL)
+        print(Console.YELLOW, *msg, Console.END_COL)
 
     @staticmethod
     def print_green(*msg: str):
-        print(cli_col.GREEN, *msg, cli_col.END_COL)
+        print(Console.GREEN, *msg, Console.END_COL)
 
     @staticmethod
     def print_red(*msg: str):
-        print(cli_col.RED, *msg, cli_col.END_COL)
+        print(Console.RED, *msg, Console.END_COL)
 
     @staticmethod
     def print_good_bye_message():
-        print(cli_col.HEADER + goodbye_msg + cli_col.END_COL)
+        print(Console.HEADER + goodbye_msg + Console.END_COL)
 
 
 goodbye_msg = """

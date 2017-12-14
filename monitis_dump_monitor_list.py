@@ -2,7 +2,7 @@ from webapis.monitisapi import api_connector
 from webapis.monitisapi.data_model import Monitor
 from webapis.common.data_model import GenericWrappingIterator
 from webapis import utils
-from webapis.utils import cli_col
+from webapis.utils import console
 
 
 welcome_msg = """
@@ -43,7 +43,7 @@ def main():
             --output etc/dump/monitis_rum_monitors.csv
     ```
     """
-    cli_col.print_header(welcome_msg)
+    console.print_header(welcome_msg)
     parser = utils.get_output_arg_parser(description='Dump the list of monitor in Monitis into a CSV file.')
     args = parser.parse_args()
 
@@ -61,8 +61,8 @@ def main():
             file.write(csv_line)
             dumped_monitors_count += 1
             print("\t**** " + csv_line)
-    cli_col.print_green("%d monitors dumped" % dumped_monitors_count)
-    cli_col.print_good_bye_message()
+    console.print_green("%d monitors dumped" % dumped_monitors_count)
+    console.print_good_bye_message()
 
 
 if __name__ == "__main__":
