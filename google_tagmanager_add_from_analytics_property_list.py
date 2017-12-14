@@ -99,7 +99,8 @@ def main():
             processed_accounts.append(account.name)
             analytics_account_properties_dict.pop(account_name)
         else:
-            print("\nThe Tag Manager Account +%s+ doesn't exist in Google Analytics" % account_name)
+            Console.print_yellow("\nThe Tag Manager Account +",
+                                 account_name, "+ doesn't exist in Google Analytics")
     batch.execute()
     Console.print_green("\nProcessed ", report_total_accounts_count,
                         " account(s) and ", report_total_containers_count, " Container(s) in total.")
