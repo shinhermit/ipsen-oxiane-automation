@@ -47,7 +47,7 @@ def main():
     Console.print_header(welcome_msg)
     parser = utils.get_input_arg_parser(description="Add sites in google search console base on a "
                                                     "list of google analytics properties from a CSV file.",
-                                        parents=[tools.argparser])
+                                        parents=(tools.argparser,))
     args = parser.parse_args()
 
     search_console_settings = settings.googleapi["search_console"]

@@ -28,7 +28,10 @@ welcome_msg = """
 
 def main():
     """
-    Dump the list of all Google Analytics properties in a CSV file.
+    Add a tag in Google Tag Manager for each Google Analytics Property.
+
+    The tag is to be add in a container that ha the same name as the
+    Google Analytics Account to which the property belongs.
 
     This script expects:
      - the client_secret.json file which you can download from your
@@ -48,7 +51,7 @@ def main():
     Console.print_header(welcome_msg)
     parser = utils.get_input_arg_parser(description="Add tags in google tag manager base on a "
                                                     "list of google analytics properties from a CSV file.",
-                                        parents=[tools.argparser])
+                                        parents=(tools.argparser,))
     args = parser.parse_args()
 
     tag_manager_settings = settings.googleapi["tag_manager"]
@@ -74,9 +77,9 @@ def main():
         account_name = account.name
         account_id = account.account_id
         report_containers_count = 0
-        account_exist = analytics_account_properties_dict.get(account_name)
         print("\nChecking Account existence and state...")
-        if account_exist and account_name not in processed_accounts:
+        account_exist_in_analytics = analytics_account_properties_dict.get(account_name)
+        if account_exist_in_analytics and account_name not in processed_accounts:
             print("\nAccount name: %s , Account Id: %s" % (account_name, account_id))
             for prop in analytics_account_properties_dict[account_name]:
                 report_total_containers_count += 1
@@ -96,19 +99,26 @@ def main():
             processed_accounts.append(account.name)
             analytics_account_properties_dict.pop(account_name)
         else:
-            print("\nThe Account %s doesn't exist" % account_name)
+            print("\nThe Tag Manager Account +%s+ doesn't exist in Google Analytics" % account_name)
     batch.execute()
     Console.print_green("\nProcessed ", report_total_accounts_count,
                         " account(s) and ", report_total_containers_count, " Container(s) in total.")
 
     for missing_account in analytics_account_properties_dict.keys():
-        Console.print_red("\nThe Google Analytics account +", missing_account,
-                          "+ is missing as a container in Tag Manger. Please "
+        Console.print_red("\nThe Tag Manger account +", missing_account,
+                          "+ is missing as an account in Google Analytics. Please "
                           "create it manually if you want to add some containers to it")
     Console.print_good_bye_message()
 
 
 def get_analytics_account_properties_dict_from_csv(csv_file_path: str) -> dict:
+    """
+    We use this dict to gather the properties by accounts.
+
+    :param csv_file_path: path to the CSV file where Google Analytics
+    Properties have previously been dumped.
+    :return: a dict representation of the Analytics Properties.
+    """
     account_to_properties = {}
     with open(csv_file_path, "r") as csv_file:
         reader = csv.DictReader(csv_file)
