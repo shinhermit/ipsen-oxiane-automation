@@ -112,7 +112,8 @@ def add_monitors_via_api(monitors_dict: dict, api_credentials_file_path):
         json_response = response.json()
         if response.status_code >= 300 or json_response.get("error"):
             errors_count += 1
-            cli_col.print_red("\t" + str(json_response))
+            cli_col.print_red("\t" + str(json_response) + "\t"
+                              + monitor_name + ", " + domain_name + ", " + account)
         else:
             processed_properties_count += 1
             print("\t**** ", monitor_name, ", ", domain_name, ", ", account)
