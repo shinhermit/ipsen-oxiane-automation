@@ -103,11 +103,11 @@ def add_monitors_via_api(monitors_dict: dict, api_credentials_file_path):
     processed_properties_count = 0
     errors_count = 0
     for monitor_name, monitor_dict in monitors_dict.items():
-        url = monitor_dict["url"]
+        domain_name = utils.get_domain_name_from_url(monitor_dict["url"])
         account = monitor_dict["account"]
         response = service.add_rum_monitor(auth_token=auth_token,
                                            monitor_name=monitor_name,
-                                           resource_url=url,
+                                           resource_url=domain_name,
                                            tag='["'+account+'"]')
         json_response = response.json()
         if response.status_code >= 300 or json_response.get("error"):
@@ -115,7 +115,7 @@ def add_monitors_via_api(monitors_dict: dict, api_credentials_file_path):
             cli_col.print_red("\t" + str(json_response))
         else:
             processed_properties_count += 1
-            print("\t**** ", monitor_name, ", ", url, ", ", account)
+            print("\t**** ", monitor_name, ", ", domain_name, ", ", account)
     cli_col.print_green("%d monitors added." % processed_properties_count)
     cli_col.print_red("%d errors." % errors_count)
     cli_col.print_good_bye_message()
