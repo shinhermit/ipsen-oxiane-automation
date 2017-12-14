@@ -1,7 +1,8 @@
 import argparse
 
 
-def get_output_arg_parser(description: str="", require_credentials: bool=True, parents: tuple=()):
+def get_output_arg_parser(description: str="", require_credentials: bool=True,
+                          parents: tuple=()) -> argparse.ArgumentParser:
     """
     Provide an arg parser for scripts that dump data to a file.
 
@@ -13,7 +14,6 @@ def get_output_arg_parser(description: str="", require_credentials: bool=True, p
     :param require_credentials: tell whether or not the credentials
     argument must be required.
     :param parents: parents parser. Especially useful for Google API Client.
-    :return: argparse.ArgumentParser
     """
     parser = argparse.ArgumentParser(description=description, parents=parents)
     parser.add_argument('--credentials',
@@ -27,7 +27,8 @@ def get_output_arg_parser(description: str="", require_credentials: bool=True, p
     return parser
 
 
-def get_input_arg_parser(description: str="", require_credentials: bool=True, parents: tuple=()):
+def get_input_arg_parser(description: str="", require_credentials: bool=True,
+                         parents: tuple=()) -> argparse.ArgumentParser:
     """
     Provide an arg parser for scripts that process data from a file.
 
@@ -39,7 +40,6 @@ def get_input_arg_parser(description: str="", require_credentials: bool=True, pa
     :param require_credentials: tell whether or not the credentials
     argument must be required.
     :param parents: parents parser. Especially useful for Google API Client.
-    :return: argparse.ArgumentParser
     """
     parser = argparse.ArgumentParser(description=description, parents=parents)
     parser.add_argument('--credentials',

@@ -132,40 +132,40 @@ class ResourceRecordSet:
         self._items_iterator = GenericWrappingIterator(self.data.get("ResourceRecords", []), ResourceRecord)
 
     @property
-    def name(self):
+    def name(self) -> str:
         """Indicate the name of the domain on which you want t perform actions"""
         return self.data.get('Name')
 
     @property
-    def type(self):
+    def type(self) -> str:
         """Indicate the type of the DNS record"""
         return self.data.get("Type")
 
     @property
-    def set_identifier(self):
+    def set_identifier(self) -> str:
         """ An identifier that differentiates among multiple resource record sets
          that have the same combination of DNS name and type"""
         return self.data.get('SetIdentifier')
 
     @property
-    def weight(self):
+    def weight(self) -> int:
         return self.data.get('Weight')
 
     @property
-    def region(self):
+    def region(self) -> str:
         """Indicate the region in which is set the actual resource record set"""
         return self.data.get('Region')
 
     @property
-    def failover(self):
+    def failover(self) -> str:
         return self.data.get('Failover')
 
     @property
-    def multi_value_answer(self):
+    def multi_value_answer(self) -> bool:
         return self.data.get('MultiValueAnswer')
 
     @property
-    def ttl(self):
+    def ttl(self) -> int:
         """Indicate the lifetime of the Resource Record Cache"""
         return self.data.get("TTL")
 
@@ -179,17 +179,17 @@ class ResourceRecordSet:
         return self._items_iterator
 
     @property
-    def health_check_id(self):
+    def health_check_id(self) -> str:
         """Indicate if you want to check the integrity of a resource record set"""
         return self.data.get('HealthCheckId')
 
     @property
-    def traffic_policy_instance_id(self):
+    def traffic_policy_instance_id(self) -> str:
         """Indicate the ID of the traffic policy instance record"""
         return self.data.get('TrafficPolicyInstanceId')
 
     @property
-    def geo_location(self):
+    def geo_location(self) -> NamedTuple:
         """An object that gives information about the location of queries"""
         geo_location = self.data.get('GeoLocation')
         if geo_location:
@@ -201,7 +201,7 @@ class ResourceRecordSet:
         return geo_location
 
     @property
-    def alias_target(self):
+    def alias_target(self) -> NamedTuple:
         """An object that gives information about an alias target"""
         alias_target = self.data.get('AliasTarget')
         if alias_target:
@@ -228,6 +228,6 @@ class ResourceRecord:
         self.data = json_as_dict
 
     @property
-    def value(self):
+    def value(self) -> str:
         """Give the value of the Resource Record"""
         return self.data.get('Value')
