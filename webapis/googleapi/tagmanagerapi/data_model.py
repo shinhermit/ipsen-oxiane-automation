@@ -68,32 +68,32 @@ class Account:
         self.data = json_as_dict
 
     @property
-    def path(self):
+    def path(self) -> str:
         """Give the relative path of the Google Tag Manager Account"""
         return self.data.get('path')
 
     @property
-    def account_id(self):
+    def account_id(self) -> str:
         """Give the unique ID of the Google Tag Manager Account"""
         return self.data.get('accountId')
 
     @property
-    def name(self):
+    def name(self) -> str:
         """Give the name of Google Tag Manager Account"""
         return self.data.get('name')
 
     @property
-    def share_data(self):
+    def share_data(self) -> bool:
         """Indicate if the Google Tag Manager Account share data anonymously with Google and others"""
         return self.data.get('shareData')
 
     @property
-    def finger_print(self):
+    def finger_print(self) -> str:
         """The fingerprint of the GTM Account as computed at storage time."""
         return self.data.get('fingerprint')
 
     @property
-    def tag_manager_url(self):
+    def tag_manager_url(self) -> str:
         """Give an url to the Google Tag Manager UI"""
         return self.data.get('tagManagerUrl')
 
