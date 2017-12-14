@@ -11,6 +11,7 @@ import settings
 from webapis import utils
 from webapis.utils import Console
 from webapis.googleapi.api_connector import get_service
+from webapis.googleapi.utils import batch_http_request_default_callback
 
 
 welcome_msg = """
@@ -56,14 +57,15 @@ def main():
                                      scope=search_console_settings['scopes'],
                                      flags=args)
 
-    batch = BatchHttpRequest()
+    batch = BatchHttpRequest(callback=batch_http_request_default_callback)
     with open(args.input_file, 'r') as csv_file:
         reader = csv.DictReader(csv_file)
         print("Preparing batch request:")
         sites_count = 0
         for row in reader:
             website_url = row["Properties"]
-            batch.add(api_search_console.sites().add(siteUrl=website_url))
+            batch.add(api_search_console.sites().add(siteUrl=website_url),
+                      callback=(lambda *x: print(website_url)))
             sites_count += 1
             print("\t** Analytics account: %s, Site URL: %s" % (row["Account"], website_url))
     Console.print_green("\n", sites_count, " sites added to batch request")

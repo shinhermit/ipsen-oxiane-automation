@@ -14,6 +14,7 @@ from webapis import utils
 from webapis.googleapi.api_connector import get_service
 from webapis.googleapi.tagmanagerapi.data_model import AccountsList
 from webapis.utils import Console
+from webapis.googleapi.utils import batch_http_request_default_callback
 
 welcome_msg = """
 -------------------------------------------------------------------------------------------------
@@ -64,7 +65,7 @@ def main():
     print("\nRetrieving Accounts list from Google Tag Manager...\n")
     tagmanager_account_list = AccountsList(api_tag_manager.accounts().list().execute())
 
-    batch = BatchHttpRequest()
+    batch = BatchHttpRequest(callback=batch_http_request_default_callback)
 
     report_total_accounts_count = 0
     report_total_containers_count = 0
@@ -86,11 +87,11 @@ def main():
                     "name": domain,
                     "usageContext": ["web"]
                 }
-                batch.add(api_tag_manager
-                          .accounts()
-                          .containers()
-                          .create(parent='accounts/' + account.account_id, body=body))
-            print("\n\t****** Processed %d Container(s) for this account" % report_containers_count)
+                batch.add(api_tag_manager.accounts().containers().create(parent='accounts/' + account_id,
+                                                                         body=body),
+                          callback=lambda *x: print(account_id, ", ", str(body)))
+            print("\n\t****** ", report_containers_count, " tags creation request added "
+                                                          "to batch for this account")
             report_total_accounts_count += 1
             processed_accounts.append(account.name)
             analytics_account_properties_dict.pop(account_name)
