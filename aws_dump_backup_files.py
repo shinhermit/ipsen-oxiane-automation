@@ -37,12 +37,13 @@ def main():
                         }
                     },
                     "records": {
+                        "DependsOn": "Zone",
                         "Type": "AWS::Route53::RecordSetGroup",
                         "Properties": {
-                            "HostedZoneId": zone_id,
-                            "Comment": "Zone record for " + zone_name,
+                            "HostedZoneName": zone_name,
+                            "Comment": "Zone record for " + zone_name + " HostedZoneId is " + zone_id,
                             "RecordSets": get_resource_record_set_cloud_formation_dict_list(
-                                zone_details, client,zone_id)
+                                zone_details, client, zone_id)
                         }
                     }
                 }
