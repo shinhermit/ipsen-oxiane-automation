@@ -103,6 +103,10 @@ class cli_col:
         print(cli_col.GREEN + msg + cli_col.END_COL)
 
     @staticmethod
+    def print_red(msg):
+        print(cli_col.RED + msg + cli_col.END_COL)
+
+    @staticmethod
     def print_good_bye_message():
         print(cli_col.HEADER + goodbye_msg + cli_col.END_COL)
 
