@@ -1,8 +1,20 @@
 import argparse
-from typing import Tuple
 
 
-def get_output_arg_parser(description="", require_credentials=True, parents=()):
+def get_output_arg_parser(description: str="", require_credentials: bool=True, parents: tuple=()):
+    """
+    Provide an arg parser for scripts that dump data to a file.
+
+    The parser will expect the arguments:
+    * --credentials: path to the credentials file to use to authenticate over the API.
+    * --output: path of the file where the data must be written
+
+    :param description: description of the parser
+    :param require_credentials: tell whether or not the credentials
+    argument must be required.
+    :param parents: parents parser. Especially useful for Google API Client.
+    :return: argparse.ArgumentParser
+    """
     parser = argparse.ArgumentParser(description=description, parents=parents)
     parser.add_argument('--credentials',
                         dest="credentials",
@@ -15,7 +27,20 @@ def get_output_arg_parser(description="", require_credentials=True, parents=()):
     return parser
 
 
-def get_input_arg_parser(description="", require_credentials=True, parents=()):
+def get_input_arg_parser(description: str="", require_credentials: bool=True, parents: tuple=()):
+    """
+    Provide an arg parser for scripts that process data from a file.
+
+    The parser will expect the arguments:
+    * --credentials: path to the credentials file to use to authenticate over the API.
+    * --input: path of the file to use as the data input
+
+    :param description: description of the parser
+    :param require_credentials: tell whether or not the credentials
+    argument must be required.
+    :param parents: parents parser. Especially useful for Google API Client.
+    :return: argparse.ArgumentParser
+    """
     parser = argparse.ArgumentParser(description=description, parents=parents)
     parser.add_argument('--credentials',
                         dest="credentials",
@@ -82,6 +107,10 @@ def get_domain_name_from_url(url: str) -> str:
 
 
 class Console:
+    """
+    Helper to print messages in the console.
+    """
+    # console color codes
     HEADER = '\033[95m'
     BLUE = '\033[94m'
     GREEN = '\033[92m'
