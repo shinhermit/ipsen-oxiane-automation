@@ -6,25 +6,40 @@ import boto3
 import yaml
 from webapis.awsapi.data_model import ResourceRecordSetList
 from webapis import utils
+from webapis.utils import Console
+
+welcome_msg = """
+-------------------------------------------------------------------------------------------------
+**                                                                                             **
+**                         AMAZON WEB SERVICES ROUTE 53 BACKUP FILES                           **
+**                                                                                             **
+**                         Create templates of Route 53 Hosted Zones                           **
+-------------------------------------------------------------------------------------------------
+"""
 
 
 def main():
+    Console.print_header(welcome_msg)
     parser = utils.get_output_arg_parser(description="Create a YAML backup for AWS route53",
                                          require_credentials=False)
     args = parser.parse_args()
 
     client = boto3.client('route53')
+    print("\nRetrieving Route53 Hosted Zones...\n")
     request_result = client.list_hosted_zones()
 
     results_are_not_truncated = not request_result.get("IsTruncated")
     next_marker = request_result.get('NextMarker')
     results_have_next_page = results_are_not_truncated or next_marker
 
+    report_total_hosted_zones = 0
+
     while results_have_next_page:
-        print(next_marker)
         for hosted_zone in request_result['HostedZones']:
+            report_total_hosted_zones += 1
             zone_id = hosted_zone["Id"].split('/')[2]
             zone_name = hosted_zone["Name"]
+            print("Creating template for %s zone" % zone_name)
             zone_details = ResourceRecordSetList(client.list_resource_record_sets(HostedZoneId=zone_id))
             cloud_formation_template_dict = {
                 "AWSTemplateFormatVersion": '2010-09-09',
@@ -51,12 +66,16 @@ def main():
             with open(args.dump_file + zone_name + 'yml', 'w+') as outfile:
                 yaml.dump(cloud_formation_template_dict, outfile, explicit_start=True, width=1000,
                           default_flow_style=False)
+            print("\t\t ++ \tDone")
         if results_are_not_truncated:
             results_have_next_page = False
-        else:
+        elif results_have_next_page:
+            print("\nRetrieving Route 53 next Hosted Zones\n")
             request_result = client.list_hosted_zones(Marker=next_marker)
             next_marker = request_result.get('NextMarker')
             results_have_next_page = next_marker is not None
+    Console.print_green("%s templates have been created" % report_total_hosted_zones)
+    Console.print_good_bye_message()
 
 
 def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecordSetList, client,
