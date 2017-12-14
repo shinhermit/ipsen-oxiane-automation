@@ -24,6 +24,24 @@ welcome_msg = """
 
 
 def main():
+    """
+    Synchronize Google Search Console sites on Analytics properties
+    from a CSV file.
+
+    This script expects:
+     - the client_secret.json file which you can download from your
+     Google Developer Console, and
+     - the path to the output file, where the data will be written.
+     The directories of this path must exist.
+
+    Usage:
+
+    ```
+    <python 3 interpreter> google_search_console_add_from_analytics_property_list.py \
+            --credentials etc/credentials/googleapi/client_secret.json \
+            --input etc/dump/GA_property_list.csv
+    ```
+    """
     print(cli_col.HEADER + welcome_msg + cli_col.END_COL)
     parser = utils.get_input_arg_parser(description="Add sites in google search console base on a "
                                                     "list of google analytics properties from a CSV file.",

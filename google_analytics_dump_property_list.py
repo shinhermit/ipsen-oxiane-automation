@@ -24,6 +24,23 @@ welcome_msg = """
 
 
 def main():
+    """
+    Dump the list of all Google Analytics properties in a CSV file.
+
+    This script expects:
+     - the client_secret.json file which you can download from your
+     Google Developer Console, and
+     - the path to the output file, where the data will be written.
+     The directories of this path must exist.
+
+    Usage:
+
+    ```
+    <python 3 interpreter>  google_analytics_dump_property_list.py \
+            --credentials etc/credentials/googleapi/client_secret.json \
+            --output etc/dump/GA_property_list.csv
+    ```
+    """
     print(cli_col.HEADER + welcome_msg + cli_col.END_COL)
     parser = utils.get_output_arg_parser(description="Dump the list of all Google Analytics properties.",
                                          parents=[tools.argparser])
