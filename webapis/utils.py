@@ -76,7 +76,7 @@ def get_domain_name_from_url(url: str) -> str:
     :param url: the URL from wich we want to extract a domain name
     :return: the domain name extracted from the URL
     """
-    wo_url = substring_after(substring_after(url, "http://"), "www.")
+    wo_url = substring_after(substring_after(substring_after(url, "http://"), "https://"), "www.")
     return substring_before(wo_url, "/")
 
 
