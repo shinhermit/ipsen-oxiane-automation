@@ -1,5 +1,4 @@
 import argparse
-from typing import Tuple
 
 
 def get_output_arg_parser(description="", require_credentials=True, parents=()):
