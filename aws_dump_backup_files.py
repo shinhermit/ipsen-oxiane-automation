@@ -94,7 +94,7 @@ def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecor
             if resource_record_set.ttl:
                 resource_record_set_cloud_formation_dict['TTL'] = resource_record_set.ttl
             if resource_record_values:
-                resource_record_set_cloud_formation_dict['ResourceRecord'] = resource_record_values
+                resource_record_set_cloud_formation_dict['ResourceRecords'] = resource_record_values
             if resource_record_set.alias_target:
                 resource_record_set_cloud_formation_dict['AliasTarget'] = {
                     "DNSName": resource_record_set.alias_target.dns_name,
