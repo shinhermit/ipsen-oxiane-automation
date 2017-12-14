@@ -101,9 +101,9 @@ def main():
                         " account(s) and ", report_total_containers_count, " Container(s) in total.")
 
     for missing_account in analytics_account_properties_dict.keys():
-        Console.print_red("\nThe account ", missing_account,
-                          " is missing, please create it manually if you want "
-                          "to add some containers to it")
+        Console.print_red("\nThe Google Analytics account +", missing_account,
+                          "+ is missing as a container in Tag Manger. Please "
+                          "create it manually if you want to add some containers to it")
     Console.print_good_bye_message()
 
 
