@@ -9,6 +9,35 @@ from webapis import utils
 
 
 def main():
+    """
+    Add monitors in Monitis from a list of properties previously dumped
+    from Google Analytics.
+
+    This script expects:
+     - a credentials file which contains the Monitis API credentials
+     - the path to the input file that contains some previously dumped
+     Google Analytics properties.
+     The directories of this path must exist.
+
+     The credentials file contains JSON in the form:
+
+    ```
+        {
+          "api_key": "your api key",
+          "secret_key": "your secret key",
+          "agent_key": "your agent key",
+          "user_key": "your user key"
+        }
+    ```
+
+    Usage:
+
+    ```
+    <python 3 interpreter> monitis_add_monitor_from_GA_property_list.py \
+            --credentials etc/credentials/monitisapi/secret_credentials.json \
+            --input etc/dump/GA_property_list.csv
+    ```
+    """
     parser = utils.get_input_arg_parser(description="Dump the list of all Google Analytics properties.")
     args = parser.parse_args()
 

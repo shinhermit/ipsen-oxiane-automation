@@ -5,6 +5,33 @@ from webapis import utils
 
 
 def main():
+    """
+    Dum the list of all Monitis' monitors in a CSV file.
+
+    This script expects:
+     - a credentials file which contains the Monitis API credentials
+     - the path to the output file, where the data will be written.
+     The directories of this path must exist.
+
+     The credentials file contains JSON in the form:
+
+    ```
+        {
+          "api_key": "your api key",
+          "secret_key": "your secret key",
+          "agent_key": "your agent key",
+          "user_key": "your user key"
+        }
+    ```
+
+    Usage:
+
+    ```
+    <python 3 interpreter>  monitis_dump_monitor_list.py \
+            --credentials etc/credentials/monitisapi/secret_credentials.json \
+            --output etc/dump/monitis_rum_monitors.csv
+    ```
+    """
     parser = utils.get_output_arg_parser(description='Dump the list of monitor in Monitis into a CSV file.')
     args = parser.parse_args()
 
