@@ -31,7 +31,8 @@ def main():
     This script expects:
      - the client_secret.json file which you can download from your
      Google Developer Console, and
-     - the path to the output file, where the data will be written.
+     - the path to the input file that contains some previously dumped
+     Google Analytics properties.
      The directories of this path must exist.
 
     Usage:

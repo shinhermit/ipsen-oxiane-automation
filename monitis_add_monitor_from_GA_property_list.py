@@ -6,10 +6,52 @@ given in a csv file on the Monitis Application
 from webapis.monitisapi import api_connector
 import csv
 from webapis import utils
+from webapis.utils import cli_col
+
+
+welcome_msg = """
+-------------------------------------------------------------------------------------------------
+**                                                                                             **
+**                                   MONITIS'S MONITORS SYNC                                   **
+**                                                                                             **
+**  Add monitors in Monitis from a list of properties previously dumped from Google Analytics  **
+-------------------------------------------------------------------------------------------------
+"""
 
 
 def main():
-    parser = utils.get_input_arg_parser(description="Dump the list of all Google Analytics properties.")
+    """
+    Add monitors in Monitis from a list of properties previously dumped
+    from Google Analytics.
+
+    This script expects:
+     - a credentials file which contains the Monitis API credentials
+     - the path to the input file that contains some previously dumped
+     Google Analytics properties.
+     The directories of this path must exist.
+
+     The credentials file contains JSON in the form:
+
+    ```
+        {
+          "api_key": "your api key",
+          "secret_key": "your secret key",
+          "agent_key": "your agent key",
+          "user_key": "your user key"
+        }
+    ```
+
+    Usage:
+
+    ```
+    <python 3 interpreter> monitis_add_monitor_from_GA_property_list.py \
+            --credentials etc/credentials/monitisapi/secret_credentials.json \
+            --input etc/dump/GA_property_list.csv
+    ```
+    """
+    cli_col.print_header(welcome_msg)
+    parser = utils.get_input_arg_parser(description="Add monitors in Monitis from a list of properties "
+                                                    "previously dumped from Google Analytics.")
     args = parser.parse_args()
 
     service = api_connector.Service(args.credentials)
@@ -34,6 +76,7 @@ def main():
                                 monitor_name=monitor_name,
                                 resource_url=monitor.get('url'),
                                 tag='["'+monitor.get('account')+'"]')
+    cli_col.print_good_bye_message()
 
 
 def set_values(resource_url):
