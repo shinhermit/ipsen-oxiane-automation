@@ -34,7 +34,7 @@ def main():
 
     report_total_hosted_zones = 0
 
-    while results_have_next_page:
+    while request_result:
         for hosted_zone in request_result['HostedZones']:
             report_total_hosted_zones += 1
             zone_id = hosted_zone["Id"].split('/')[2]
@@ -67,13 +67,13 @@ def main():
                 yaml.dump(cloud_formation_template_dict, outfile, explicit_start=True, width=1000,
                           default_flow_style=False)
             print("\t\t ++ \tDone")
-        if results_are_not_truncated:
-            results_have_next_page = False
-        elif results_have_next_page:
+        if results_have_next_page:
             print("\nRetrieving Route 53 next Hosted Zones\n")
             request_result = client.list_hosted_zones(Marker=next_marker)
             next_marker = request_result.get('NextMarker')
             results_have_next_page = next_marker is not None
+        else:
+            request_result = None
     Console.print_green("%s templates have been created" % report_total_hosted_zones)
     Console.print_good_bye_message()
 
