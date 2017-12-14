@@ -92,11 +92,24 @@ def load_analytics_properties(csv_file: str) -> dict:
     return monitors_dict
 
 
-def get_monitor_name(domain_name):
+def get_monitor_name(domain_name: str) -> str:
+    """
+    Encapsulate the RUM monitors naming convention.
+
+    :param domain_name: the domain name for which a RUM
+    monitor is to be created.
+    :return: a Rams' compliant RUM monitor name
+    """
     return domain_name + "_RUM"
 
 
-def add_monitors_via_api(monitors_dict: dict, api_credentials_file_path):
+def add_monitors_via_api(monitors_dict: dict, api_credentials_file_path: str):
+    """
+    Add a monitor in Monitis using its API?
+
+    :param monitors_dict: monitors to add, represented as a dict.
+    :param api_credentials_file_path: path to the API credentials file.
+    """
     service = api_connector.Service(api_credentials_file_path)
     auth_token = service.get_token()
 
