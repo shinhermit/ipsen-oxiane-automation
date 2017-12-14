@@ -90,6 +90,22 @@ class cli_col:
     UNDERLINE = '\033[4m'
     END_COL = '\033[0m'
 
+    @staticmethod
+    def print_header(msg):
+        print(cli_col.HEADER + msg + cli_col.END_COL)
+
+    @staticmethod
+    def print_yellow(msg):
+        print(cli_col.YELLOW + msg + cli_col.END_COL)
+
+    @staticmethod
+    def print_green(msg):
+        print(cli_col.GREEN + msg + cli_col.END_COL)
+
+    @staticmethod
+    def print_good_bye_message():
+        print(cli_col.HEADER + goodbye_msg + cli_col.END_COL)
+
 
 goodbye_msg = """
 -------------------------------------------------------------------------------------------------

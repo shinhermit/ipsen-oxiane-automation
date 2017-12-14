@@ -6,6 +6,17 @@ given in a csv file on the Monitis Application
 from webapis.monitisapi import api_connector
 import csv
 from webapis import utils
+from webapis.utils import cli_col
+
+
+welcome_msg = """
+-------------------------------------------------------------------------------------------------
+**                                                                                             **
+**                                   MONITIS'S MONITORS SYNC                                   **
+**                                                                                             **
+**  Add monitors in Monitis from a list of properties previously dumped from Google Analytics  **
+-------------------------------------------------------------------------------------------------
+"""
 
 
 def main():
@@ -38,7 +49,9 @@ def main():
             --input etc/dump/GA_property_list.csv
     ```
     """
-    parser = utils.get_input_arg_parser(description="Dump the list of all Google Analytics properties.")
+    cli_col.print_header(welcome_msg)
+    parser = utils.get_input_arg_parser(description="Add monitors in Monitis from a list of properties "
+                                                    "previously dumped from Google Analytics.")
     args = parser.parse_args()
 
     service = api_connector.Service(args.credentials)
@@ -63,6 +76,7 @@ def main():
                                 monitor_name=monitor_name,
                                 resource_url=monitor.get('url'),
                                 tag='["'+monitor.get('account')+'"]')
+    cli_col.print_good_bye_message()
 
 
 def set_values(resource_url):
