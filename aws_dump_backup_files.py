@@ -106,7 +106,7 @@ def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecor
             hosted_zone_has_next_record = False
         else:
             hosted_zone = ResourceRecordSetList(client.list_resource_record_sets(HostedZoneId=zone_id,
-                                                                                 StartRecorName=next_record_name))
+                                                                                 StartRecordName=next_record_name))
             next_record_name = hosted_zone.next_record_name
             hosted_zone_has_next_record = next_record_name is not None
     return resource_record_set_cloud_formation_dict_list
