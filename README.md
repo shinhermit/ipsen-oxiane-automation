@@ -20,6 +20,7 @@ a venv in the directory **_etc/bin/venv_** inside the project.
 Install the requirements in the virtualenv. From the root directory of the project:
 
 ```
+etc/bin/venv/bin/pip install --upgrade pip
 etc/bin/venv/bin/pip install -r requirements.txt
 ```
 
