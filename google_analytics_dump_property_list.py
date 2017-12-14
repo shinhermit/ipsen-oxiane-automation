@@ -41,7 +41,7 @@ def main():
             --output etc/dump/GA_property_list.csv
     ```
     """
-    print(cli_col.HEADER + welcome_msg + cli_col.END_COL)
+    cli_col.print_header(welcome_msg)
     parser = utils.get_output_arg_parser(description="Dump the list of all Google Analytics properties.",
                                          parents=[tools.argparser])
     args = parser.parse_args()
@@ -53,8 +53,8 @@ def main():
                                 scope=analytics_settings['scopes'],
                                 flags=args)
 
-    account_summaries = api_analytics.management().accountSummaries().list().execute(num_retries=10)
     print("\nRetrieving Accounts and properties list...\n")
+    account_summaries = api_analytics.management().accountSummaries().list().execute(num_retries=10)
     acc_list = AccountSummaryList(account_summaries)
 
     with open(args.dump_file, 'w+', newline='') as csv_file:
@@ -63,7 +63,7 @@ def main():
         report_total_accounts_count = 0
         report_total_properties_count = 0
         for account in acc_list.items:
-            print("\n****** Account Name: %s , Account ID: %s" % (account.name, account.id))
+            print("\n****** Account Name: ", account.name, " , Account ID: ", account.id)
             report_properties_count = 0
             for web_property in account.web_properties:
                 url = web_property.website_url
@@ -74,13 +74,13 @@ def main():
                     report_total_properties_count += 1
                     print("\tProperty Name: %s, URL: %s\n\t\t ++ \tDone" % (web_property.name, url))
                 else:
-                    print(("\tProperty Name: %s, URL: %s\n\t\t ++ \t" +
-                          cli_col.YELLOW+"Skipped"+cli_col.END_COL) % (web_property.name, url))
+                    print("\tProperty Name: %s, URL: %s" % (web_property.name, url))
+                    cli_col.print_yellow("\t\t ++ \tSkipped")
             print("\n\t****** Processed %d propertie(s) for this account" % report_properties_count)
             report_total_accounts_count += 1
-    print((cli_col.GREEN + "\nProcessed %d account(s) and %d propertie(s) in total." + cli_col.END_COL)
-          % (report_total_accounts_count, report_total_properties_count))
-    print(cli_col.HEADER + utils.goodbye_msg + cli_col.END_COL)
+    cli_col.print_green("\nProcessed ", report_total_accounts_count, " account(s) and ",
+                        report_total_properties_count, " propertie(s) in total.")
+    cli_col.print_good_bye_message()
 
 
 if __name__ == "__main__":

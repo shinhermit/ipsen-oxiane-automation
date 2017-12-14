@@ -1,4 +1,5 @@
 import argparse
+from typing import Tuple
 
 
 def get_output_arg_parser(description="", require_credentials=True, parents=()):
@@ -91,20 +92,20 @@ class cli_col:
     END_COL = '\033[0m'
 
     @staticmethod
-    def print_header(msg):
-        print(cli_col.HEADER + msg + cli_col.END_COL)
+    def print_header(*msg: str):
+        print(cli_col.HEADER, *msg, cli_col.END_COL)
 
     @staticmethod
-    def print_yellow(msg):
-        print(cli_col.YELLOW + msg + cli_col.END_COL)
+    def print_yellow(*msg: str):
+        print(cli_col.YELLOW, *msg, cli_col.END_COL)
 
     @staticmethod
-    def print_green(msg):
-        print(cli_col.GREEN + msg + cli_col.END_COL)
+    def print_green(*msg: str):
+        print(cli_col.GREEN, *msg, cli_col.END_COL)
 
     @staticmethod
-    def print_red(msg):
-        print(cli_col.RED + msg + cli_col.END_COL)
+    def print_red(*msg: str):
+        print(cli_col.RED, *msg, cli_col.END_COL)
 
     @staticmethod
     def print_good_bye_message():
