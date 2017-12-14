@@ -54,30 +54,8 @@ def main():
                                                     "previously dumped from Google Analytics.")
     args = parser.parse_args()
 
-    service = api_connector.Service(args.credentials)
-    auth_token = service.get_token()
-
     monitors_dict = load_analytics_properties(args.input_file)
-
-    processed_properties_count = 0
-    errors_count = 0
-    for monitor_name, monitor_dict in monitors_dict.items():
-        url = monitor_dict["url"]
-        account = monitor_dict["account"]
-        response = service.add_rum_monitor(auth_token=auth_token,
-                                           monitor_name=monitor_name,
-                                           resource_url=url,
-                                           tag='["'+account+'"]')
-        json_response = response.json()
-        if response.status_code >= 300 or json_response.get("error"):
-            errors_count += 1
-            cli_col.print_red("\t" + str(json_response))
-        else:
-            processed_properties_count += 1
-            print("\t**** ", monitor_name, ", ", url, ", ", account)
-    cli_col.print_green("%d monitors added." % processed_properties_count)
-    cli_col.print_red("%d errors." % errors_count)
-    cli_col.print_good_bye_message()
+    add_monitors_via_api(monitors_dict, args.credentials)
 
 
 def load_analytics_properties(csv_file: str) -> dict:
@@ -116,6 +94,31 @@ def load_analytics_properties(csv_file: str) -> dict:
 
 def get_monitor_name(domain_name):
     return domain_name + "_RUM"
+
+
+def add_monitors_via_api(monitors_dict: dict, api_credentials_file_path):
+    service = api_connector.Service(api_credentials_file_path)
+    auth_token = service.get_token()
+
+    processed_properties_count = 0
+    errors_count = 0
+    for monitor_name, monitor_dict in monitors_dict.items():
+        url = monitor_dict["url"]
+        account = monitor_dict["account"]
+        response = service.add_rum_monitor(auth_token=auth_token,
+                                           monitor_name=monitor_name,
+                                           resource_url=url,
+                                           tag='["'+account+'"]')
+        json_response = response.json()
+        if response.status_code >= 300 or json_response.get("error"):
+            errors_count += 1
+            cli_col.print_red("\t" + str(json_response))
+        else:
+            processed_properties_count += 1
+            print("\t**** ", monitor_name, ", ", url, ", ", account)
+    cli_col.print_green("%d monitors added." % processed_properties_count)
+    cli_col.print_red("%d errors." % errors_count)
+    cli_col.print_good_bye_message()
 
 
 if __name__ == "__main__":
