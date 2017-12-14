@@ -8,6 +8,7 @@ import yaml
 from webapis.awsapi.data_model import ResourceRecordSetList
 from webapis import utils
 from webapis.utils import Console
+from webapis.awsapi.utils import update_type_counter_aws_resource_record_set
 
 welcome_msg = """
 -------------------------------------------------------------------------------------------------
@@ -65,6 +66,7 @@ def dump_hosted_zone(hosted_zone: dict, output_file_path: str, boto3_client: bot
     zone_name = hosted_zone["Name"]
     print("Creating template for %s zone" % zone_name)
     zone_details = ResourceRecordSetList(boto3_client.list_resource_record_sets(HostedZoneId=zone_id))
+    type_counter_aws_resource_record_set = {}
     cloud_formation_template_dict = {
         "AWSTemplateFormatVersion": '2010-09-09',
         "Description": "Backup definition for the " + zone_name + " zone",
@@ -82,19 +84,24 @@ def dump_hosted_zone(hosted_zone: dict, output_file_path: str, boto3_client: bot
                     "HostedZoneName": zone_name,
                     "Comment": "Zone record for " + zone_name + " HostedZoneId is " + zone_id,
                     "RecordSets": get_resource_record_set_cloud_formation_dict_list(
-                        zone_details, boto3_client, zone_id)
+                        zone_details, boto3_client, zone_id, type_counter_aws_resource_record_set)
                 }
             }
         }
     }
-    with open(output_file_path + zone_name + 'yml', 'w+') as outfile:
-        yaml.dump(cloud_formation_template_dict, outfile, explicit_start=True, width=1000,
-                  default_flow_style=False)
+    file_name = output_file_path + zone_name + 'yml'
+    with open(file_name, 'w+') as outfile:
+        yaml.dump(cloud_formation_template_dict, outfile,
+                  explicit_start=True, width=1000, default_flow_style=False)
+    print("\t\t File: ", file_name)
+    print("\t\t Total Records: ", sum(type_counter_aws_resource_record_set.values()))
+    print("\t\t Records types: ", str(type_counter_aws_resource_record_set))
     print("\t\t ++ \tDone")
 
 
-def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecordSetList, client,
-                                                      zone_id: str) -> List[dict]:
+def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecordSetList,
+                                                      client: botocore.client.BaseClient, zone_id: str,
+                                                      type_counter_aws_resource_record_set: dict) -> List[dict]:
     """
     Provide a dict representation of a resource record set that can
     be used to dump a cloud formation formatted YAML file.
@@ -121,6 +128,8 @@ def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecor
                 "Name": resource_record_set.name,
                 "Type": resource_record_set.type
             }
+            update_type_counter_aws_resource_record_set(type_counter_aws_resource_record_set,
+                                                        resource_record_set.type)
 
             if resource_record_set.ttl:
                 resource_record_set_cloud_formation_dict['TTL'] = resource_record_set.ttl
