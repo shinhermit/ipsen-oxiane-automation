@@ -6,27 +6,21 @@ import boto3
 import yaml
 from webapis.awsapi.data_model import ResourceRecordSetList
 from webapis import utils
-import pprint
 
 
 def main():
-    pp = pprint.PrettyPrinter()
     parser = utils.get_output_arg_parser(description="Create a YAML backup for AWS route53",
                                          require_credentials=False)
     args = parser.parse_args()
 
     client = boto3.client('route53')
     request_result = client.list_hosted_zones()
-    cpt = 0
-    not_truncated = not request_result.get("IsTruncated")
-    next_marker = request_result.get('NextMarker')
-    continue_loop = not_truncated or next_marker
-    # if request_result['IsTruncated']:
-    #     pp.pprint(request_result.get('NextMarker'))
-    #     next_marker = request_result.get('NextMarker')
 
-    while continue_loop:
-        cpt += 1
+    results_are_not_truncated = not request_result.get("IsTruncated")
+    next_marker = request_result.get('NextMarker')
+    results_have_next_page = results_are_not_truncated or next_marker
+
+    while results_have_next_page:
         print(next_marker)
         for hosted_zone in request_result['HostedZones']:
             zone_id = hosted_zone["Id"].split('/')[2]
@@ -47,24 +41,25 @@ def main():
                         "Properties": {
                             "HostedZoneId": zone_id,
                             "Comment": "Zone record for " + zone_name,
-                            "RecordSets": get_resource_record_set_cloud_formation_dict_list(zone_details, client,zone_id)
+                            "RecordSets": get_resource_record_set_cloud_formation_dict_list(
+                                zone_details, client,zone_id)
                         }
                     }
                 }
             }
             with open(args.dump_file + zone_name + 'yml', 'w+') as outfile:
-                yaml.dump(cloud_formation_template_dict, outfile, explicit_start=True, width=1000, default_flow_style=False)
-        if not_truncated:
-            continue_loop = False
+                yaml.dump(cloud_formation_template_dict, outfile, explicit_start=True, width=1000,
+                          default_flow_style=False)
+        if results_are_not_truncated:
+            results_have_next_page = False
         else:
             request_result = client.list_hosted_zones(Marker=next_marker)
             next_marker = request_result.get('NextMarker')
-            continue_loop = next_marker is not None
-
-    print(cpt)
+            results_have_next_page = next_marker is not None
 
 
-def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecordSetList, client, zone_id) -> List[dict]:
+def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecordSetList, client,
+                                                      zone_id: str) -> List[dict]:
     """
     Provide a dict representation of a resource record set that can
     be used to dump a cloud formation formatted YAML file.
@@ -81,12 +76,12 @@ def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecor
             }
         }
     """
-    not_truncated = hosted_zone.is_truncated
-    next_record = hosted_zone.next_record_name
-    continue_loop = next_record or not_truncated
+    results_are_not_truncated = not hosted_zone.is_truncated
+    next_record_name = hosted_zone.next_record_name
+    hosted_zone_has_next_record = next_record_name is not None or results_are_not_truncated
 
     resource_record_set_cloud_formation_dict_list = []
-    while continue_loop:
+    while hosted_zone_has_next_record:
         for resource_record_set in hosted_zone.resource_record_sets:
             resource_record_values = [resource_record.value
                                       for resource_record in resource_record_set.resource_records]
@@ -107,13 +102,13 @@ def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecor
                 }
 
             resource_record_set_cloud_formation_dict_list.append(resource_record_set_cloud_formation_dict)
-        if not_truncated:
-            continue_loop = False
+        if results_are_not_truncated:
+            hosted_zone_has_next_record = False
         else:
             hosted_zone = ResourceRecordSetList(client.list_resource_record_sets(HostedZoneId=zone_id,
-                                                                                 StartRecorName=next_record))
-            next_record = hosted_zone.next_record_name
-            continue_loop = next_record is not None
+                                                                                 StartRecorName=next_record_name))
+            next_record_name = hosted_zone.next_record_name
+            hosted_zone_has_next_record = next_record_name is not None
     return resource_record_set_cloud_formation_dict_list
 
 
