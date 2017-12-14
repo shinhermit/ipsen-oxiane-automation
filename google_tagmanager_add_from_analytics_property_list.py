@@ -67,15 +67,22 @@ def main():
 
     batch = BatchHttpRequest()
 
+    report_total_accounts_count = 0
+    report_total_containers_count = 0
+
     for account in tagmanager_account_list.account:
         account_name = account.name
         account_id = account.account_id
+        report_containers_count = 0
         account_exist = analytics_account_properties_dict.get(account_name)
         print("\nChecking Account existence and state...")
         if account_exist and account_name not in processed_accounts:
             print("\nAccount name: %s , Account Id: %s" % (account_name, account_id))
             for prop in analytics_account_properties_dict[account_name]:
+                report_total_containers_count += 1
+                report_containers_count += 1
                 domain = utils.get_domain_name_from_url(prop)
+                print("\tDomain Name: %s, URL: %s\n\t\t ++ \tDone " % (domain, prop))
                 body = {
                     "name": domain,
                     "usageContext": ["web"]
@@ -84,16 +91,22 @@ def main():
                           .accounts()
                           .containers()
                           .create(parent='accounts/' + account.account_id, body=body))
+            print("\n\t****** Processed %d Container(s) for this account" % report_containers_count)
+            report_total_accounts_count += 1
             processed_accounts.append(account.name)
             analytics_account_properties_dict.pop(account_name)
-        elif account_name in processed_accounts:
-            print("\nThe Account %s has already been treated" % account_name)
         else:
             print("\nThe Account %s doesn't exist" % account_name)
     batch.execute()
+    print((cli_col.GREEN + "\nProcessed %d account(s) and %d Container(s) in total." + cli_col.END_COL)
+          % (report_total_accounts_count, report_total_containers_count))
 
-    # for missing_account in analytics_account_properties_dict.keys():
-    #     print("The account %s is missing, please create it manually if you want to add some containers to it" % missing_account)
+    for missing_account in analytics_account_properties_dict.keys():
+        print((cli_col.RED
+              + "\nThe account %s is missing, please create it manually if you want to add some containers to it"
+              + cli_col.END_COL)
+              % missing_account)
+    print(cli_col.HEADER + utils.goodbye_msg + cli_col.END_COL)
 
 
 def get_analytics_account_properties_dict_from_csv(csv_file_path: str) -> dict:
