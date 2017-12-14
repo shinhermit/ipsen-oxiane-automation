@@ -20,6 +20,21 @@ welcome_msg = """
 
 
 def main():
+    """
+    Create a template for each Hosted Zones in AWS Route 53
+
+    This script expects:
+     - the path to the output file, where the template will be create.
+     The directories of this path must exist.
+
+    Usage:
+
+    ```
+    <python 3 interpreter> aws_dump_backup_files.py \
+            --output etc/dump/AWS_backup_files/
+    ```
+    """
+
     Console.print_header(welcome_msg)
     parser = utils.get_output_arg_parser(description="Create a YAML backup for AWS route53",
                                          require_credentials=False)
