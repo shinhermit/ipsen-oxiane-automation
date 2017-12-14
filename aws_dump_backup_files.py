@@ -96,12 +96,8 @@ def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecor
             }
         }
     """
-    results_are_not_truncated = not hosted_zone.is_truncated
-    next_record_name = hosted_zone.next_record_name
-    hosted_zone_has_next_record = next_record_name is not None or results_are_not_truncated
-
     resource_record_set_cloud_formation_dict_list = []
-    while hosted_zone_has_next_record:
+    while hosted_zone is not None:
         for resource_record_set in hosted_zone.resource_record_sets:
             resource_record_values = [resource_record.value
                                       for resource_record in resource_record_set.resource_records]
@@ -122,13 +118,12 @@ def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecor
                 }
 
             resource_record_set_cloud_formation_dict_list.append(resource_record_set_cloud_formation_dict)
-        if results_are_not_truncated:
-            hosted_zone_has_next_record = False
-        else:
+        next_record_name = hosted_zone.next_record_name
+        if next_record_name:
             hosted_zone = ResourceRecordSetList(client.list_resource_record_sets(HostedZoneId=zone_id,
                                                                                  StartRecordName=next_record_name))
-            next_record_name = hosted_zone.next_record_name
-            hosted_zone_has_next_record = next_record_name is not None
+        else:
+            hosted_zone = None
     return resource_record_set_cloud_formation_dict_list
 
 
