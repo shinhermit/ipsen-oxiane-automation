@@ -3,6 +3,7 @@ http://boto3.readthedocs.io/en/latest/reference/services/route53.html#Route53.Cl
 """
 from typing import List
 import boto3
+import botocore.client
 import yaml
 from webapis.awsapi.data_model import ResourceRecordSetList
 from webapis import utils
@@ -31,46 +32,50 @@ def main():
     report_total_hosted_zones = 0
 
     while request_result is not None:
-        for hosted_zone in request_result['HostedZones']:
+        for hosted_zone in request_result.get('HostedZones', ()):
             report_total_hosted_zones += 1
-            zone_id = hosted_zone["Id"].split('/')[2]
-            zone_name = hosted_zone["Name"]
-            print("Creating template for %s zone" % zone_name)
-            zone_details = ResourceRecordSetList(client.list_resource_record_sets(HostedZoneId=zone_id))
-            cloud_formation_template_dict = {
-                "AWSTemplateFormatVersion": '2010-09-09',
-                "Description": "Backup definition for the " + zone_name + " zone",
-                "Resources": {
-                    "Zone": {
-                        "Type": "AWS::Route53::HostedZone",
-                        "Properties": {
-                            "Name": zone_name
-                        }
-                    },
-                    "records": {
-                        "DependsOn": "Zone",
-                        "Type": "AWS::Route53::RecordSetGroup",
-                        "Properties": {
-                            "HostedZoneName": zone_name,
-                            "Comment": "Zone record for " + zone_name + " HostedZoneId is " + zone_id,
-                            "RecordSets": get_resource_record_set_cloud_formation_dict_list(
-                                zone_details, client, zone_id)
-                        }
-                    }
-                }
-            }
-            with open(args.dump_file + zone_name + 'yml', 'w+') as outfile:
-                yaml.dump(cloud_formation_template_dict, outfile, explicit_start=True, width=1000,
-                          default_flow_style=False)
-            print("\t\t ++ \tDone")
+            dump_hosted_zone(hosted_zone, args.dump_file, client)
         next_marker = request_result.get('NextMarker')
-        if next_marker is not None:
+        if next_marker:
             print("\nRetrieving Route 53 next Hosted Zones\n")
             request_result = client.list_hosted_zones(Marker=next_marker)
         else:
             request_result = None
     Console.print_green("%s templates have been created" % report_total_hosted_zones)
     Console.print_good_bye_message()
+
+
+def dump_hosted_zone(hosted_zone: dict, output_file_path: str, boto3_client: botocore.client.BaseClient):
+    zone_id = hosted_zone["Id"].split('/')[2]
+    zone_name = hosted_zone["Name"]
+    print("Creating template for %s zone" % zone_name)
+    zone_details = ResourceRecordSetList(boto3_client.list_resource_record_sets(HostedZoneId=zone_id))
+    cloud_formation_template_dict = {
+        "AWSTemplateFormatVersion": '2010-09-09',
+        "Description": "Backup definition for the " + zone_name + " zone",
+        "Resources": {
+            "Zone": {
+                "Type": "AWS::Route53::HostedZone",
+                "Properties": {
+                    "Name": zone_name
+                }
+            },
+            "records": {
+                "DependsOn": "Zone",
+                "Type": "AWS::Route53::RecordSetGroup",
+                "Properties": {
+                    "HostedZoneName": zone_name,
+                    "Comment": "Zone record for " + zone_name + " HostedZoneId is " + zone_id,
+                    "RecordSets": get_resource_record_set_cloud_formation_dict_list(
+                        zone_details, boto3_client, zone_id)
+                }
+            }
+        }
+    }
+    with open(output_file_path + zone_name + 'yml', 'w+') as outfile:
+        yaml.dump(cloud_formation_template_dict, outfile, explicit_start=True, width=1000,
+                  default_flow_style=False)
+    print("\t\t ++ \tDone")
 
 
 def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecordSetList, client,
