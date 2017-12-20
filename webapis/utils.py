@@ -24,10 +24,15 @@ def get_output_arg_parser(description: str="", require_credentials: bool=True,
                         dest="dump_file",
                         required=True,
                         help='path of the file where the data must be written')
+    parser.add_argument('--with-soa',
+                        action='store_true',
+                        required=False,
+                        help='path of the file to use as the data input')
     return parser
 
 
 def get_input_arg_parser(description: str="", require_credentials: bool=True,
+                         require_input: bool=True,
                          parents: tuple=()) -> argparse.ArgumentParser:
     """
     Provide an arg parser for scripts that process data from a file.
@@ -39,6 +44,8 @@ def get_input_arg_parser(description: str="", require_credentials: bool=True,
     :param description: description of the parser
     :param require_credentials: tell whether or not the credentials
     argument must be required.
+    :param require_input: tell whether or not an input file
+    argument must be required.
     :param parents: parents parser. Especially useful for Google API Client.
     """
     parser = argparse.ArgumentParser(description=description, parents=parents)
@@ -48,9 +55,21 @@ def get_input_arg_parser(description: str="", require_credentials: bool=True,
                         help='path to the credentials file to use to authenticate over the API.')
     parser.add_argument('--input',
                         dest="input_file",
-                        required=True,
+                        required=require_input,
+                        help='path of the file to use as the data input')
+    parser.add_argument('--with-soa',
+                        action='store_true',
+                        required=False,
                         help='path of the file to use as the data input')
     return parser
+
+
+def str_to_boolean(value: str):
+    if value.lower() in ('yes', 'true', 't', 'y', '1'):
+        print("ici")
+        return True
+    elif value.lower() in ('no', 'false', 'f', 'n', '0'):
+        return False
 
 
 def substring_before(initial_str: str, sub: str) -> str:
