@@ -127,10 +127,10 @@ def get_resource_record_set_cloud_formation_dict_list(hosted_zone: ResourceRecor
     resource_record_set_cloud_formation_dict_list = []
     while hosted_zone is not None:
         for resource_record_set in hosted_zone.resource_record_sets:
-            resource_record_values = [resource_record.value
-                                      for resource_record in resource_record_set.resource_records]
-            if((resource_record_set.type != "SOA" and resource_record_set.type != "NS")
-               or (with_soa and (resource_record_set.type == "SOA" or resource_record_set.type == "NS"))):
+            if ((resource_record_set.type != "SOA" and resource_record_set.type != "NS")
+            or (with_soa and (resource_record_set.type == "SOA" or resource_record_set.type == "NS"))):
+                resource_record_values = [resource_record.value
+                                          for resource_record in resource_record_set.resource_records]
                 resource_record_set_cloud_formation_dict = {
                     "Name": resource_record_set.name,
                     "Type": resource_record_set.type
