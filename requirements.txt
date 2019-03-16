@@ -8,7 +8,7 @@ rsa==3.4.2
 six==1.11.0
 termcolor==1.1.0
 uritemplate==3.0.0
-requests==2.18.4
+requests==2.20.0
 awscli==1.11.187
 boto3==1.4.7
 
